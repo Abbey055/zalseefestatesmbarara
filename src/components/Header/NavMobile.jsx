@@ -1,160 +1,58 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  VStack, 
-  Drawer, 
-  DrawerBody, 
-  DrawerCloseButton, 
-  DrawerContent, 
-  DrawerHeader, 
-  DrawerOverlay, 
-  Button, 
-  IconButton, 
-  useDisclosure, 
-  Center,
-  Divider
-} from '@chakra-ui/react';
+import { VStack, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Button, IconButton, useDisclosure, Center } from '@chakra-ui/react';
 import { FiMenu } from 'react-icons/fi';
-import { FaHome, FaImage, FaInfoCircle, FaPhone, FaPlusCircle } from 'react-icons/fa';
-import { GiFarmTractor } from 'react-icons/gi';
 
 const NavMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   
   const handleLinkClick = () => {
-    onClose();
+    onClose(); // Close the drawer when a link is clicked
   };
 
   return (
     <>
-        <IconButton 
-          variant='ghost' 
-          icon={<FiMenu fontSize='1.35rem' />}
-          aria-label='Open Menu'
-          onClick={onOpen} 
-          ref={btnRef}
-          _hover={{ bg: 'green.50' }}
-          size="lg"
+        <IconButton variant='ghost' 
+            icon={<FiMenu fontSize='1.35rem' />}
+            aria-label='Open Menu'
+            onClick={onOpen} 
+            ref={btnRef}
         />
         <Drawer 
           isOpen={isOpen} 
           placement='right' 
           onClose={onClose} 
           finalFocusRef={btnRef}
-          size="full"
         >
             <DrawerOverlay />
             <DrawerContent>
-                <DrawerCloseButton size="lg" />
+                <DrawerCloseButton />
                 <Center>
-                  <DrawerHeader 
-                    color="green.700"
-                    fontSize="3xl"
-                    fontWeight="bold"
-                    pt={8}
-                  >
-                    Menu
-                  </DrawerHeader>
+                  <DrawerHeader>Menu</DrawerHeader>
                 </Center>
-                <DrawerBody px={8} mt={4}>
-                    <VStack as='nav' spacing={6} alignItems='stretch'>
-                        {/* Navigation Links with Icons */}
+                <DrawerBody px='14' mt='4'>
+                    <VStack as='nav' spacing='8' alignItems='left'>
+                        {/* Navigation Links with React Router Links */}
                         <Link to="/" onClick={handleLinkClick}>
-                          <Button 
-                            variant='ghost' 
-                            w="full" 
-                            justifyContent="flex-start"
-                            leftIcon={<FaHome size={20} />}
-                            _hover={{ bg: 'green.50', color: 'green.700' }}
-                            size="lg"
-                            fontSize="lg"
-                            py={6}
-                          >
-                            Home
-                          </Button>
+                          <Button variant='link' w="full">Home</Button>
                         </Link>
                         
                         <Link to="/land-for-sale" onClick={handleLinkClick}>
-                          <Button 
-                            variant='ghost' 
-                            w="full" 
-                            justifyContent="flex-start"
-                            leftIcon={<GiFarmTractor size={20} />}
-                            _hover={{ bg: 'green.50', color: 'green.700' }}
-                            size="lg"
-                            fontSize="lg"
-                            py={6}
-                          >
-                            Land for Sale
-                          </Button>
-                        </Link>
-
-                        <Link to="/gallery" onClick={handleLinkClick}>
-                          <Button 
-                            variant='ghost' 
-                            w="full" 
-                            justifyContent="flex-start"
-                            leftIcon={<FaImage size={20} />}
-                            _hover={{ bg: 'green.50', color: 'green.700' }}
-                            size="lg"
-                            fontSize="lg"
-                            py={6}
-                          >
-                            Gallery
-                          </Button>
+                          <Button variant='link' w="full">Land for Sale</Button>
                         </Link>
                         
                         <Link to="/about" onClick={handleLinkClick}>
-                          <Button 
-                            variant='ghost' 
-                            w="full" 
-                            justifyContent="flex-start"
-                            leftIcon={<FaInfoCircle size={20} />}
-                            _hover={{ bg: 'green.50', color: 'green.700' }}
-                            size="lg"
-                            fontSize="lg"
-                            py={6}
-                          >
-                            About Us
-                          </Button>
+                          <Button variant='link' w="full">About Us</Button>
                         </Link>
                         
-                        <Divider my={4} borderColor='green.200' />
-                        
-                        {/* Action Buttons with Icons */}
+                        {/* Action Buttons */}
                         <Link to="/contact" onClick={handleLinkClick}>
-                          <Button 
-                            size="lg"
-                            variant='solid' 
-                            colorScheme="green"
-                            w="full"
-                            leftIcon={<FaPhone size={20} />}
-                            _hover={{
-                              transform: 'translateY(-2px)',
-                              boxShadow: '0 5px 15px rgba(56,161,105,0.3)'
-                            }}
-                            py={6}
-                          >
-                            Contact Us
-                          </Button>
+                          <Button size='sm' variant='solid' w="full">Contact Us</Button>
                         </Link>
                         
                         <Link to="/list-land" onClick={handleLinkClick}>
-                          <Button 
-                            size="lg"
-                            variant='outline' 
-                            colorScheme="green"
-                            w="full"
-                            leftIcon={<FaPlusCircle size={20} />}
-                            _hover={{
-                              bg: 'green.50',
-                              transform: 'translateY(-2px)'
-                            }}
-                            py={6}
-                          >
-                            List Land
-                          </Button>
+                          <Button size='sm' variant='outline' w="full">List Land</Button>
                         </Link>
                     </VStack>
                 </DrawerBody>
