@@ -15,13 +15,6 @@ A modern, responsive real estate website for Zalseef Estates, specializing in pr
 - **Photo Gallery**: Browse all available land images in a beautiful grid layout with lightbox view
 - **Animated Counters**: Statistics that count up on page load
 - **Why Choose Us**: Highlighting key benefits with icons
-- **Click-to-Call**: Phone numbers that trigger calls on mobile devices
-- **WhatsApp Integration**: Direct chat with agents
-- **Testimonials**: Client reviews and success stories
-- **Featured Properties**: Showcase of hot deals
-- **Payment Calculator**: Estimate monthly payments
-- **Newsletter Subscription**: Stay updated on new properties
-- **404 Page**: Custom error page with navigation
 
 ### 🎯 Land Categories
 - **Residential Plots** - From 2.3M in prime locations
