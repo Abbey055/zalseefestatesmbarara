@@ -23,7 +23,7 @@ const NavMobile = () => {
   const btnRef = useRef();
   
   const handleLinkClick = () => {
-    onClose(); // Close the drawer when a link is clicked
+    onClose();
   };
 
   return (
@@ -35,35 +35,41 @@ const NavMobile = () => {
           onClick={onOpen} 
           ref={btnRef}
           _hover={{ bg: 'green.50' }}
+          size="lg"
         />
         <Drawer 
           isOpen={isOpen} 
           placement='right' 
           onClose={onClose} 
           finalFocusRef={btnRef}
+          size="full"
         >
             <DrawerOverlay />
             <DrawerContent>
-                <DrawerCloseButton />
+                <DrawerCloseButton size="lg" />
                 <Center>
                   <DrawerHeader 
                     color="green.700"
-                    fontSize="2xl"
+                    fontSize="3xl"
                     fontWeight="bold"
+                    pt={8}
                   >
                     Menu
                   </DrawerHeader>
                 </Center>
-                <DrawerBody px='6' mt='2'>
-                    <VStack as='nav' spacing='4' alignItems='stretch'>
+                <DrawerBody px={8} mt={4}>
+                    <VStack as='nav' spacing={6} alignItems='stretch'>
                         {/* Navigation Links with Icons */}
                         <Link to="/" onClick={handleLinkClick}>
                           <Button 
                             variant='ghost' 
                             w="full" 
                             justifyContent="flex-start"
-                            leftIcon={<FaHome />}
+                            leftIcon={<FaHome size={20} />}
                             _hover={{ bg: 'green.50', color: 'green.700' }}
+                            size="lg"
+                            fontSize="lg"
+                            py={6}
                           >
                             Home
                           </Button>
@@ -74,8 +80,11 @@ const NavMobile = () => {
                             variant='ghost' 
                             w="full" 
                             justifyContent="flex-start"
-                            leftIcon={<GiFarmTractor />}
+                            leftIcon={<GiFarmTractor size={20} />}
                             _hover={{ bg: 'green.50', color: 'green.700' }}
+                            size="lg"
+                            fontSize="lg"
+                            py={6}
                           >
                             Land for Sale
                           </Button>
@@ -86,8 +95,11 @@ const NavMobile = () => {
                             variant='ghost' 
                             w="full" 
                             justifyContent="flex-start"
-                            leftIcon={<FaImage />}
+                            leftIcon={<FaImage size={20} />}
                             _hover={{ bg: 'green.50', color: 'green.700' }}
+                            size="lg"
+                            fontSize="lg"
+                            py={6}
                           >
                             Gallery
                           </Button>
@@ -98,27 +110,31 @@ const NavMobile = () => {
                             variant='ghost' 
                             w="full" 
                             justifyContent="flex-start"
-                            leftIcon={<FaInfoCircle />}
+                            leftIcon={<FaInfoCircle size={20} />}
                             _hover={{ bg: 'green.50', color: 'green.700' }}
+                            size="lg"
+                            fontSize="lg"
+                            py={6}
                           >
                             About Us
                           </Button>
                         </Link>
                         
-                        <Divider my='2' borderColor='green.200' />
+                        <Divider my={4} borderColor='green.200' />
                         
                         {/* Action Buttons with Icons */}
                         <Link to="/contact" onClick={handleLinkClick}>
                           <Button 
-                            size='md' 
+                            size="lg"
                             variant='solid' 
                             colorScheme="green"
                             w="full"
-                            leftIcon={<FaPhone />}
+                            leftIcon={<FaPhone size={20} />}
                             _hover={{
                               transform: 'translateY(-2px)',
                               boxShadow: '0 5px 15px rgba(56,161,105,0.3)'
                             }}
+                            py={6}
                           >
                             Contact Us
                           </Button>
@@ -126,15 +142,16 @@ const NavMobile = () => {
                         
                         <Link to="/list-land" onClick={handleLinkClick}>
                           <Button 
-                            size='md' 
+                            size="lg"
                             variant='outline' 
                             colorScheme="green"
                             w="full"
-                            leftIcon={<FaPlusCircle />}
+                            leftIcon={<FaPlusCircle size={20} />}
                             _hover={{
                               bg: 'green.50',
                               transform: 'translateY(-2px)'
                             }}
+                            py={6}
                           >
                             List Land
                           </Button>

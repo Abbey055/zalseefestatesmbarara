@@ -253,18 +253,21 @@ const Banner = () => {
           </HStack>
         </VStack>
 
-        {/* Right Images - EXACTLY your original layout, now responsive */}
+        {/* Right Images - Mobile optimized */}
         <VStack 
           justify='center' 
           flex="1"
-          spacing={0}
-          minH={{ base: "300px", sm: "350px", md: "400px", lg: "450px", xl: "500px" }}
+          spacing={2}
+          minH={{ base: "400px", sm: "450px", md: "500px", lg: "450px", xl: "500px" }}
+          p={{ base: 4, sm: 6 }}
         >
-          {/* First Image - Full height on desktop, adjusted for mobile */}
+          {/* First Image */}
           <Box 
-            h={{ base: "60%", lg: "100%" }} 
+            h={{ base: "250px", sm: "280px", md: "300px", lg: "280px" }} 
             w="100%"
-            display="block"
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="dark-lg"
           >
             <Image
               src={MbararaLand1}
@@ -272,17 +275,18 @@ const Banner = () => {
               h="100%"
               w="100%"
               objectFit="cover"
-              borderRadius="md"
             />
           </Box>
 
-          {/* Second Image - Half height, positioned to overlap */}
+          {/* Second Image */}
           <Box 
-            h={{ base: "45%", lg: "50%" }}
-            w={{ base: "90%", lg: "100%" }}
-            mt={{ base: "-15%", lg: "0" }}
-            alignSelf={{ base: "flex-end", lg: "auto" }}
-            display="block"
+            h={{ base: "180px", sm: "200px", md: "220px", lg: "200px" }}
+            w="90%"
+            alignSelf="flex-end"
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="dark-lg"
+            mt={{ base: -8, sm: -10, md: -12 }}
           >
             <Image
               src={MbararaLand2}
@@ -290,8 +294,6 @@ const Banner = () => {
               h="100%"
               w="100%"
               objectFit="cover"
-              borderRadius="md"
-              boxShadow="dark-lg"
             />
           </Box>
         </VStack>

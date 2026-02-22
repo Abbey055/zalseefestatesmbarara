@@ -4,7 +4,6 @@ import {
   Heading,
   HStack,
   Image,
-  Stack,
   Text,
   Box,
   Link as ChakraLink
@@ -23,75 +22,70 @@ const LandItem = ({ land }) => {
       display="flex"
       flexDirection="column"
     >
-      {/* Fixed height image */}
-      <Box height="170px" overflow="hidden">
+      <Box height={{ base: "200px", sm: "170px" }} overflow="hidden">
         <Image 
           src={land.imageLg} 
-          h="170px" 
+          h="100%" 
           w="100%" 
           alt='land' 
           objectFit='cover'
         />
       </Box>
 
-      {/* Flexible content area with consistent spacing */}
       <VStack 
-        p='4' 
+        p={{ base: 5, sm: 4 }} 
         align='stretch' 
-        spacing={3}
+        spacing={4}
         flex="1"
         justify="space-between"
       >
-        {/* Top section - always at top */}
         <Box>
-          <Text fontWeight="extrabold" fontSize="18px" color="green.500">
+          <Text fontWeight="extrabold" fontSize={{ base: "20px", sm: "18px" }} color="green.500">
             UGX {land.price.toLocaleString()}
-            <span style={{ fontSize: 12, color: "grey", fontWeight: "normal" }}>
+            <span style={{ fontSize: 14, color: "grey", fontWeight: "normal" }}>
               {land.priceType === 'total' ? ' total' : ' per sqm'}
             </span>
           </Text>
 
-          <Heading fontSize="20px" mt={1} noOfLines={1}>
+          <Heading fontSize={{ base: "22px", sm: "20px" }} mt={1} noOfLines={1}>
             {land.name}
           </Heading>
 
-          <Text fontSize="13px" color="grey" mt={1} noOfLines={1}>
+          <Text fontSize="14px" color="grey" mt={1} noOfLines={1}>
             {land.location}
           </Text>
         </Box>
 
-        {/* Divider */}
         <Divider />
 
-        {/* Middle section - features */}
         <HStack spacing={4} justify="space-between" flexWrap="wrap">
-          <HStack spacing={1}>
-            <BiMap style={{ color: "#38A169" }} />
-            <Text fontSize="12px" noOfLines={1}>{land.district}</Text>
+          <HStack spacing={2}>
+            <BiMap size={16} style={{ color: "#38A169" }} />
+            <Text fontSize="13px" noOfLines={1}>{land.district}</Text>
           </HStack>
 
-          <HStack spacing={1}>
-            <BiRuler style={{ color: "#38A169" }} />
-            <Text fontSize="12px">{land.size}</Text>
+          <HStack spacing={2}>
+            <BiRuler size={16} style={{ color: "#38A169" }} />
+            <Text fontSize="13px">{land.size}</Text>
           </HStack>
 
-          <HStack spacing={1}>
-            <BiLandscape style={{ color: "#38A169" }} />
-            <Text fontSize="12px" noOfLines={1}>{land.landUse}</Text>
+          <HStack spacing={2}>
+            <BiLandscape size={16} style={{ color: "#38A169" }} />
+            <Text fontSize="13px" noOfLines={1}>{land.landUse}</Text>
           </HStack>
         </HStack>
 
-        {/* Bottom section - always at bottom */}
-        <HStack justify="space-between" mt="auto" pt={2}>
+        <HStack justify="space-between" mt="auto" pt={3}>
           <ChakraLink 
             href={`tel:+${land.agent.phone.replace(/\s/g, '')}`}
-            fontSize="sm"
+            fontSize="16px"
             color="green.600"
             fontWeight="medium"
+            p={2}
           >
             📞 Call Agent
           </ChakraLink>
-          <Text fontSize="xs" color="gray.500" noOfLines={1}>
+          <Text fontSize="14px" color="gray.500" noOfLines={1}>
             {land.agent.name}
           </Text>
         </HStack>
