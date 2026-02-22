@@ -264,50 +264,64 @@ const Banner = () => {
           </HStack>
         </VStack>
 
-        {/* Right Images - Mobile optimized */}
-        <VStack 
-          justify='center' 
+        {/* Right Images - FIXED: No gaps, perfectly positioned */}
+        <Box
           flex="1"
-          spacing={2}
-          minH={{ base: "400px", sm: "450px", md: "500px", lg: "450px", xl: "500px" }}
-          p={{ base: 4, sm: 6 }}
+          position="relative"
+          h={{ base: "400px", sm: "450px", md: "500px", lg: "100%" }}
+          minH={{ base: "400px", sm: "450px", md: "500px", lg: "auto" }}
+          bg="green.900"
+          overflow="hidden"
         >
-          {/* First Image */}
-          <Box 
-            h={{ base: "250px", sm: "280px", md: "300px", lg: "280px" }} 
-            w="100%"
-            borderRadius="xl"
-            overflow="hidden"
-            boxShadow="dark-lg"
+          {/* First Image - Full size */}
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
           >
             <Image
               src={MbararaLand1}
               alt="Mbarara land"
-              h="100%"
               w="100%"
+              h="100%"
               objectFit="cover"
             />
           </Box>
 
-          {/* Second Image */}
-          <Box 
-            h={{ base: "180px", sm: "200px", md: "220px", lg: "200px" }}
-            w="90%"
-            alignSelf="flex-end"
+          {/* Second Image - Positioned absolutely */}
+          <Box
+            position="absolute"
+            bottom={{ base: "5%", md: "8%", lg: "10%" }}
+            right={{ base: "5%", md: "8%", lg: "10%" }}
+            w={{ base: "50%", md: "45%", lg: "40%" }}
+            h={{ base: "35%", md: "40%", lg: "45%" }}
             borderRadius="xl"
             overflow="hidden"
             boxShadow="dark-lg"
-            mt={{ base: -8, sm: -10, md: -12 }}
+            border="4px solid white"
           >
             <Image
               src={MbararaLand2}
               alt="Mbarara land"
-              h="100%"
               w="100%"
+              h="100%"
               objectFit="cover"
             />
           </Box>
-        </VStack>
+
+          {/* Gradient overlay for better text contrast */}
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            bg="linear-gradient(to top, rgba(0,0,0,0.3), transparent)"
+            pointerEvents="none"
+          />
+        </Box>
       </Stack>
 
       {/* Bottom fade effect */}
