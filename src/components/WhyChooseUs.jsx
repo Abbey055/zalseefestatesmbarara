@@ -63,28 +63,28 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <Box py={16} bg="white" borderRadius="xl" my={8}>
+    <Box py={{ base: 10, md: 16 }} bg="white" borderRadius="xl" my={8} px={{ base: 4, md: 0 }}>
       <Container maxW="container.xl">
         {/* Header */}
-        <VStack spacing={4} mb={12} textAlign="center">
+        <VStack spacing={4} mb={{ base: 8, md: 12 }} textAlign="center">
           <Heading
-            size="2xl"
+            size={{ base: "xl", md: "2xl" }}
             bgGradient="linear(to-r, green.700, green.500)"
             bgClip="text"
           >
             Why Choose Zalseef Estates?
           </Heading>
-          <Text fontSize="xl" color="gray.600" maxW="700px">
+          <Text fontSize={{ base: "md", md: "xl" }} color="gray.600" maxW="700px">
             We make land ownership simple, secure, and stress-free. Here's why hundreds of clients trust us.
           </Text>
         </VStack>
 
         {/* Benefits Grid */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={{ base: 4, md: 6, lg: 8 }}>
           {benefits.map((benefit, index) => (
             <Box
               key={index}
-              p={6}
+              p={{ base: 5, md: 6 }}
               bg="white"
               borderRadius="xl"
               boxShadow="lg"
@@ -119,21 +119,21 @@ const WhyChooseUs = () => {
                   borderRadius="lg"
                   color={benefit.color}
                 >
-                  <Icon as={benefit.icon} boxSize={8} />
+                  <Icon as={benefit.icon} boxSize={{ base: 6, md: 8 }} />
                 </Box>
 
                 {/* Title */}
-                <Heading size="md" color="gray.800">
+                <Heading size={{ base: "sm", md: "md" }} color="gray.800">
                   {benefit.title}
                 </Heading>
 
                 {/* Description */}
-                <Text color="gray.600" lineHeight="tall">
+                <Text fontSize={{ base: "sm", md: "md" }} color="gray.600" lineHeight="tall">
                   {benefit.description}
                 </Text>
 
                 {/* Checkmark feature list */}
-                <HStack spacing={2} color="green.600" fontSize="sm">
+                <HStack spacing={2} color="green.600" fontSize={{ base: "xs", md: "sm" }}>
                   <FaCheckCircle />
                   <Text>Included in every purchase</Text>
                 </HStack>
@@ -145,41 +145,48 @@ const WhyChooseUs = () => {
         {/* Stats Bar */}
         <SimpleGrid
           columns={{ base: 2, md: 4 }}
-          spacing={6}
-          mt={16}
-          p={8}
+          spacing={{ base: 4, md: 6 }}
+          mt={{ base: 10, md: 16 }}
+          p={{ base: 4, md: 8 }}
           bg="green.50"
           borderRadius="xl"
         >
           <VStack>
-            <Heading size="2xl" color="green.600">500+</Heading>
-            <Text color="gray.600">Plots Sold</Text>
+            <Heading size={{ base: "xl", md: "2xl" }} color="green.600">500+</Heading>
+            <Text fontSize={{ base: "xs", md: "sm" }} color="gray.600">Plots Sold</Text>
           </VStack>
           <VStack>
-            <Heading size="2xl" color="green.600">1000+</Heading>
-            <Text color="gray.600">Happy Clients</Text>
+            <Heading size={{ base: "xl", md: "2xl" }} color="green.600">1000+</Heading>
+            <Text fontSize={{ base: "xs", md: "sm" }} color="gray.600">Happy Clients</Text>
           </VStack>
           <VStack>
-            <Heading size="2xl" color="green.600">10+</Heading>
-            <Text color="gray.600">Years Experience</Text>
+            <Heading size={{ base: "xl", md: "2xl" }} color="green.600">10+</Heading>
+            <Text fontSize={{ base: "xs", md: "sm" }} color="gray.600">Years Experience</Text>
           </VStack>
           <VStack>
-            <Heading size="2xl" color="green.600">24/7</Heading>
-            <Text color="gray.600">Client Support</Text>
+            <Heading size={{ base: "xl", md: "2xl" }} color="green.600">24/7</Heading>
+            <Text fontSize={{ base: "xs", md: "sm" }} color="gray.600">Client Support</Text>
           </VStack>
         </SimpleGrid>
 
-        {/* Call to Action */}
-        <VStack mt={12} spacing={4}>
-          <Text fontSize="lg" color="gray.600">
+        {/* Call to Action - FIXED: Smaller buttons on mobile */}
+        <VStack mt={{ base: 8, md: 12 }} spacing={4}>
+          <Text fontSize={{ base: "md", md: "lg" }} color="gray.600">
             Ready to find your perfect piece of paradise?
           </Text>
-          <HStack spacing={4}>
-            <Link to="/contact">
+          <HStack 
+            spacing={{ base: 3, md: 4 }} 
+            flexDirection={{ base: "column", sm: "row" }}
+            w={{ base: "100%", sm: "auto" }}
+          >
+            <Link to="/contact" style={{ width: "100%" }}>
               <Button
-                size="lg"
+                size={{ base: "md", md: "lg" }}
                 colorScheme="green"
-                px={8}
+                px={{ base: 6, md: 8 }}
+                py={{ base: 4, md: 6 }}
+                fontSize={{ base: "sm", md: "md" }}
+                w="100%"
                 _hover={{
                   transform: 'translateY(-2px)',
                   boxShadow: 'xl',
@@ -188,12 +195,15 @@ const WhyChooseUs = () => {
                 Contact Us Today
               </Button>
             </Link>
-            <Link to="/land-for-sale">
+            <Link to="/land-for-sale" style={{ width: "100%" }}>
               <Button
-                size="lg"
+                size={{ base: "md", md: "lg" }}
                 variant="outline"
                 colorScheme="green"
-                px={8}
+                px={{ base: 6, md: 8 }}
+                py={{ base: 4, md: 6 }}
+                fontSize={{ base: "sm", md: "md" }}
+                w="100%"
                 _hover={{
                   bg: 'green.50',
                   transform: 'translateY(-2px)',

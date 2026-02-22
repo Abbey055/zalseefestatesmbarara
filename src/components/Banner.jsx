@@ -170,17 +170,24 @@ const Banner = () => {
             ))}
           </HStack>
 
-          {/* CTA Buttons */}
-          <HStack spacing={4} pt={4} animation={`${fadeIn} 0.8s ease-out 0.6s both`}>
-            <Link to="/land-for-sale">
+          {/* CTA Buttons - FIXED: Smaller on mobile */}
+          <HStack 
+            spacing={4} 
+            pt={4} 
+            animation={`${fadeIn} 0.8s ease-out 0.6s both`}
+            flexDirection={{ base: "column", sm: "row" }}
+            w="100%"
+          >
+            <Link to="/land-for-sale" style={{ width: "100%" }}>
               <Button
-                size={{ base: "sm", sm: "md", md: "lg" }}
+                size={{ base: "md", sm: "md", md: "lg" }}
                 colorScheme="green"
                 px={{ base: 4, sm: 6, md: 8 }}
-                py={{ base: 4, md: 6 }}
-                fontSize={{ base: "xs", sm: "sm", md: "md" }}
+                py={{ base: 3, md: 6 }}
+                fontSize={{ base: "sm", sm: "sm", md: "md" }}
                 borderRadius="full"
                 bgGradient="linear(to-r, green.500, green.600)"
+                w="100%"
                 _hover={{
                   bgGradient: "linear(to-r, green.600, green.700)",
                   transform: "translateY(-2px)",
@@ -191,19 +198,20 @@ const Banner = () => {
                 View Listings
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to="/contact" style={{ width: "100%" }}>
               <Button
-                size={{ base: "sm", sm: "md", md: "lg" }}
+                size={{ base: "md", sm: "md", md: "lg" }}
                 variant="outline"
                 colorScheme="green"
                 px={{ base: 4, sm: 6, md: 8 }}
-                py={{ base: 4, md: 6 }}
-                fontSize={{ base: "xs", sm: "sm", md: "md" }}
+                py={{ base: 3, md: 6 }}
+                fontSize={{ base: "sm", sm: "sm", md: "md" }}
                 borderRadius="full"
                 borderWidth="2px"
+                w="100%"
                 _hover={{
                   bg: 'green.50',
-                  transform: "translateY(-2px)",
+                  transform: 'translateY(-2px)',
                   borderColor: 'green.600'
                 }}
                 transition="all 0.2s"
