@@ -169,24 +169,25 @@ const WhyChooseUs = () => {
           </VStack>
         </SimpleGrid>
 
-        {/* Call to Action - FIXED: Smaller buttons on mobile */}
+        {/* Call to Action - FIXED: Better mobile buttons */}
         <VStack mt={{ base: 8, md: 12 }} spacing={4}>
           <Text fontSize={{ base: "md", md: "lg" }} color="gray.600">
             Ready to find your perfect piece of paradise?
           </Text>
-          <HStack 
-            spacing={{ base: 3, md: 4 }} 
-            flexDirection={{ base: "column", sm: "row" }}
-            w={{ base: "100%", sm: "auto" }}
+          <VStack 
+            spacing={3} 
+            w="100%"
           >
             <Link to="/contact" style={{ width: "100%" }}>
               <Button
-                size={{ base: "md", md: "lg" }}
+                size="md"
                 colorScheme="green"
-                px={{ base: 6, md: 8 }}
-                py={{ base: 4, md: 6 }}
-                fontSize={{ base: "sm", md: "md" }}
+                px={6}
+                py={6}
+                fontSize="md"
                 w="100%"
+                h="auto"
+                whiteSpace="normal"
                 _hover={{
                   transform: 'translateY(-2px)',
                   boxShadow: 'xl',
@@ -197,13 +198,15 @@ const WhyChooseUs = () => {
             </Link>
             <Link to="/land-for-sale" style={{ width: "100%" }}>
               <Button
-                size={{ base: "md", md: "lg" }}
+                size="md"
                 variant="outline"
                 colorScheme="green"
-                px={{ base: 6, md: 8 }}
-                py={{ base: 4, md: 6 }}
-                fontSize={{ base: "sm", md: "md" }}
+                px={6}
+                py={6}
+                fontSize="md"
                 w="100%"
+                h="auto"
+                whiteSpace="normal"
                 _hover={{
                   bg: 'green.50',
                   transform: 'translateY(-2px)',
@@ -212,7 +215,7 @@ const WhyChooseUs = () => {
                 Browse Plots
               </Button>
             </Link>
-          </HStack>
+          </VStack>
         </VStack>
       </Container>
     </Box>
