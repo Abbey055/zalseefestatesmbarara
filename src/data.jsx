@@ -1,5 +1,5 @@
 export const bannerData = [
-    {'500+': 'Plots Sold'}, 
+    {'2000+': 'Plots Sold'}, 
     {'1000+': 'Happy Clients'}, 
     {'10+': 'Years Experience'}
 ]

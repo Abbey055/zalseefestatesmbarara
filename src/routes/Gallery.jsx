@@ -14,18 +14,18 @@ import {
   useDisclosure,
   VStack,
   HStack,
-  Badge,
   IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   Select,
   Button,
+  AspectRatio,
 } from '@chakra-ui/react';
-import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { SearchIcon } from '@chakra-ui/icons';
+import { FaArrowLeft, FaArrowRight, FaMapMarkerAlt, FaRuler, FaTag } from 'react-icons/fa';
 
-// Import all land images (adjust paths as needed)
+// Import all land images (keep your existing imports)
 import Land1 from '../assets/images/lands/land1.jpg';
 import Land2 from '../assets/images/lands/land2.jpg';
 import Land3 from '../assets/images/lands/land3.jpg';
@@ -185,6 +185,7 @@ const Gallery = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               focusBorderColor="green.500"
               bg="white"
+              borderRadius="full"
             />
           </InputGroup>
           
@@ -194,6 +195,7 @@ const Gallery = () => {
             onChange={(e) => setFilter(e.target.value)}
             focusBorderColor="green.500"
             bg="white"
+            borderRadius="full"
           >
             <option value="all">All Types</option>
             <option value="Featured">Featured</option>
@@ -203,12 +205,12 @@ const Gallery = () => {
           </Select>
         </HStack>
         
-        <Text alignSelf="flex-start" color="gray.600">
+        <Text alignSelf="flex-start" color="gray.600" fontSize="sm">
           Showing {filteredImages.length} {filteredImages.length === 1 ? 'image' : 'images'}
         </Text>
       </VStack>
 
-      {/* Gallery Grid */}
+      {/* Gallery Grid - Clean Layout */}
       <SimpleGrid 
         columns={{ base: 1, sm: 2, md: 3, lg: 4 }} 
         spacing={6}
@@ -216,46 +218,40 @@ const Gallery = () => {
         {filteredImages.map((image, index) => (
           <Box
             key={index}
-            borderRadius="xl"
+            borderRadius="lg"
             overflow="hidden"
-            boxShadow="lg"
+            boxShadow="md"
             cursor="pointer"
             onClick={() => handleImageClick(index)}
-            position="relative"
             transition="all 0.3s"
             _hover={{
               transform: 'scale(1.02)',
-              boxShadow: '2xl',
+              boxShadow: 'xl',
             }}
             bg="white"
           >
-            <Image
-              src={image.src}
-              alt={image.title}
-              h="200px"
-              w="100%"
-              objectFit="cover"
-            />
+            <AspectRatio ratio={4/3}>
+              <Image
+                src={image.src}
+                alt={image.title}
+                objectFit="cover"
+              />
+            </AspectRatio>
             
-            {/* Image Overlay with Info */}
-            <VStack
-              position="absolute"
-              bottom={0}
-              left={0}
-              right={0}
-              p={3}
-              bg="linear-gradient(to top, rgba(0,0,0,0.8), transparent)"
-              color="white"
-              align="start"
-              spacing={1}
-            >
-              <Text fontWeight="bold" fontSize="sm">
+            {/* Clean Image Info - No Badges */}
+            <VStack p={3} align="start" spacing={1} bg="white">
+              <Text fontWeight="bold" fontSize="md" color="green.700" noOfLines={1}>
                 {image.title}
               </Text>
-              <HStack spacing={2}>
-                <Badge colorScheme="green">{image.location}</Badge>
-                <Badge colorScheme="blue">{image.type}</Badge>
-                {image.size && <Badge colorScheme="purple">{image.size}</Badge>}
+              <HStack spacing={3} color="gray.600" fontSize="sm">
+                <HStack spacing={1}>
+                  <FaMapMarkerAlt size={12} />
+                  <Text>{image.location}</Text>
+                </HStack>
+                <HStack spacing={1}>
+                  <FaRuler size={12} />
+                  <Text>{image.size}</Text>
+                </HStack>
               </HStack>
             </VStack>
           </Box>
@@ -273,17 +269,18 @@ const Gallery = () => {
               setSearchTerm('');
               setFilter('all');
             }}
+            borderRadius="full"
           >
             Clear Filters
           </Button>
         </Box>
       )}
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal - Clean Design */}
       <Modal isOpen={isOpen} onClose={onClose} size="6xl">
-        <ModalOverlay bg="blackAlpha.800" />
+        <ModalOverlay bg="blackAlpha.900" />
         <ModalContent bg="transparent" boxShadow="none">
-          <ModalCloseButton color="white" zIndex={10} />
+          <ModalCloseButton color="white" size="lg" zIndex={20} />
           <ModalBody p={0}>
             {selectedImage && (
               <VStack spacing={4}>
@@ -294,7 +291,6 @@ const Gallery = () => {
                     w="100%"
                     maxH="80vh"
                     objectFit="contain"
-                    borderRadius="lg"
                   />
                   
                   {/* Navigation Buttons */}
@@ -305,10 +301,10 @@ const Gallery = () => {
                     top="50%"
                     transform="translateY(-50%)"
                     onClick={handlePrev}
-                    colorScheme="green"
+                    colorScheme="whiteAlpha"
                     borderRadius="full"
-                    opacity={0.7}
-                    _hover={{ opacity: 1 }}
+                    size="lg"
+                    _hover={{ bg: 'whiteAlpha.400' }}
                   />
                   <IconButton
                     icon={<FaArrowRight />}
@@ -317,28 +313,41 @@ const Gallery = () => {
                     top="50%"
                     transform="translateY(-50%)"
                     onClick={handleNext}
-                    colorScheme="green"
+                    colorScheme="whiteAlpha"
                     borderRadius="full"
-                    opacity={0.7}
-                    _hover={{ opacity: 1 }}
+                    size="lg"
+                    _hover={{ bg: 'whiteAlpha.400' }}
                   />
                 </Box>
 
-                {/* Image Details */}
-                <Box bg="white" p={4} borderRadius="lg" w="100%">
-                  <VStack align="start" spacing={2}>
+                {/* Image Details - Clean Card */}
+                <Box bg="white" p={6} borderRadius="lg" w="100%" maxW="800px" mx="auto">
+                  <VStack align="start" spacing={3}>
                     <Heading size="lg" color="green.700">{selectedImage.title}</Heading>
-                    <HStack spacing={4}>
-                      <Text><strong>Location:</strong> {selectedImage.location}</Text>
-                      <Text><strong>Type:</strong> {selectedImage.type}</Text>
-                      {selectedImage.size && <Text><strong>Size:</strong> {selectedImage.size}</Text>}
-                    </HStack>
+                    
+                    <SimpleGrid columns={2} spacing={4} w="full">
+                      <HStack>
+                        <FaMapMarkerAlt color="#38A169" />
+                        <Text><strong>Location:</strong> {selectedImage.location}</Text>
+                      </HStack>
+                      <HStack>
+                        <FaTag color="#38A169" />
+                        <Text><strong>Type:</strong> {selectedImage.type}</Text>
+                      </HStack>
+                      <HStack>
+                        <FaRuler color="#38A169" />
+                        <Text><strong>Size:</strong> {selectedImage.size}</Text>
+                      </HStack>
+                    </SimpleGrid>
+                    
                     <Button
                       as="a"
                       href="/contact"
                       colorScheme="green"
                       size="lg"
-                      mt={2}
+                      w="full"
+                      mt={4}
+                      borderRadius="full"
                     >
                       Inquire About This Plot
                     </Button>

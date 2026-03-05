@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect } from 'react';
-import { landsData } from '../data';
+import { useAdmin } from './AdminContext';
 
 export const LandContext = createContext('');
 
 const LandProvider = ({children}) =>{
-
-    const [lands, setLands] = useState(landsData);
+    const { lands: adminLands } = useAdmin(); // Get lands from admin context
+    const [lands, setLands] = useState(adminLands);
     const [district, setDistrict] = useState('Select District');
     const [districts, setDistricts] = useState([]);
     const [price, setPrice] = useState('Select Price');
@@ -13,21 +13,26 @@ const LandProvider = ({children}) =>{
     const [landTypes, setLandTypes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     
+    // Update lands when adminLands changes
     useEffect(() => {
-        const allDistricts = lands.map(land=>{
+        setLands(adminLands);
+    }, [adminLands]);
+
+    useEffect(() => {
+        const allDistricts = adminLands.map(land=>{
             return land.district;
         })
         const uniqueDistricts = [...new Set(allDistricts)];
         setDistricts(uniqueDistricts);
-    }, []);
+    }, [adminLands]);
 
     useEffect(() => {
-        const allLandTypes = lands.map(land=>{
+        const allLandTypes = adminLands.map(land=>{
             return land.landUse;
         })
         const uniqueLandTypes = [...new Set(allLandTypes)];
         setLandTypes(uniqueLandTypes);
-    }, []);
+    }, [adminLands]);
 
     const searchHandler=()=>{
         setIsLoading(true);
@@ -46,7 +51,7 @@ const LandProvider = ({children}) =>{
             maxPrice = parseInt(priceParts[1]);
         }
 
-        const filteredLands = landsData.filter(land=> {
+        const filteredLands = adminLands.filter(land=> {
             const landPrice = parseInt(land.price);
             
             // no selection 

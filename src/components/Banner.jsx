@@ -7,26 +7,36 @@ import {
   Stack,
   Box,
   Image,
-  Icon,
+  Badge,
 } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
-import { BiPlus, BiCheckShield, BiTrendingUp } from "react-icons/bi";
-import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { keyframes } from "@emotion/react";
 
 import { bannerData } from "../data";
 import MbararaLand1 from "../assets/images/lands/mbarara1.jpg";
 import MbararaLand2 from "../assets/images/lands/mbarara2.jpg";
 
-// Animation keyframes
+// Animations
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
+const pulse = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+`;
+
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+`;
+
 // Counter Component
-const AnimatedCounter = ({ value, suffix = "" }) => {
+const AnimatedCounter = ({ value }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -46,8 +56,8 @@ const AnimatedCounter = ({ value, suffix = "" }) => {
   }, [value]);
 
   return (
-    <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" color="green.600">
-      {count}{suffix}
+    <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" color="green.600">
+      {count}+
     </Text>
   );
 };
@@ -61,8 +71,8 @@ const Banner = () => {
   }));
 
   return (
-    <Box position="relative" my={{ base: 4, md: 6, lg: 8 }}>
-      {/* Background gradient effect */}
+    <Box position="relative" my={6}>
+      {/* Full-width background */}
       <Box
         position="absolute"
         top="-20px"
@@ -76,204 +86,188 @@ const Banner = () => {
         zIndex={0}
       />
 
+      {/* Main content */}
       <Stack
         direction={{ base: "column", lg: "row" }}
         position="relative"
         zIndex={1}
-        bg="linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%)"
-        borderRadius="3xl"
+        spacing={0}
         overflow="hidden"
-        boxShadow="0 20px 40px -15px rgba(0,100,0,0.3)"
-        border="1px solid rgba(72, 187, 120, 0.2)"
-        backdropFilter="blur(10px)"
-        animation={`${fadeIn} 0.8s ease-out`}
+        borderRadius="2xl"
+        bg="white"
+        boxShadow="0 20px 40px -15px rgba(0,100,0,0.2)"
       >
         {/* Left Content */}
         <VStack
-          flex={{ base: "1", lg: "1.2" }}
-          px={{ base: 4, sm: 6, md: 8, lg: 10 }}
-          py={{ base: 6, sm: 8, md: 12, lg: 16 }}
-          align="stretch"
-          spacing={{ base: 4, md: 5, lg: 6 }}
-          bg="linear-gradient(145deg, #ffffff 0%, #f0fff4 100%)"
+          flex="1"
+          px={{ base: 6, md: 10 }}
+          py={{ base: 8, md: 12 }}
+          align="flex-start"
+          spacing={4}
+          position="relative"
+          bg="white"
         >
-          {/* Badge */}
-          <HStack spacing={2} animation={`${fadeIn} 0.8s ease-out 0.2s both`}>
-            <Box
-              bg="green.500"
-              w={{ base: "6px", md: "8px" }}
-              h={{ base: "6px", md: "8px" }}
-              borderRadius="full"
-              boxShadow="0 0 10px #38A169"
-            />
-            <Text
-              color="green.700"
-              fontWeight="semibold"
-              fontSize={{ base: "xs", md: "sm" }}
-              letterSpacing="wider"
-              textTransform="uppercase"
-            >
-              ZALSEEF ESTATES
-            </Text>
-          </HStack>
-
-          {/* Main Heading */}
-          <Box animation={`${fadeIn} 0.8s ease-out 0.3s both`}>
-            <Heading
-              fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl", xl: "5xl" }}
-              lineHeight="1.2"
-              fontWeight="extrabold"
-              bgGradient="linear(to-r, green.700, green.500, blue.500)"
-              bgClip="text"
-              letterSpacing="tight"
-            >
-              Find Your Perfect
-              <Text as="span" display="block" color="green.700">
-                Piece of Paradise
-              </Text>
-            </Heading>
-          </Box>
-
-          {/* Description */}
-          <Text
-            fontSize={{ base: "xs", sm: "sm", md: "md", lg: "lg" }}
-            color="gray.700"
-            maxW="500px"
-            lineHeight="1.8"
-            animation={`${fadeIn} 0.8s ease-out 0.4s both`}
+          {/* Limited Offer Badge */}
+          <Badge
+            colorScheme="red"
+            variant="solid"
+            px={3}
+            py={1}
+            borderRadius="full"
+            fontSize="xs"
+            textTransform="uppercase"
+            letterSpacing="wider"
+            animation={`${pulse} 2s infinite`}
+            mb={2}
           >
-            <Text as="span" fontWeight="bold" color="green.700">Zalseef Estates – Mbarara's most trusted land dealer</Text> We offer the <Text as="span" fontWeight="semibold">lowest prices • best locations • clear titles</Text>. From 2M, own your dream plot in prime areas like Kakoba, Nyamitanga, Nyarubungo & more!
-            <Text as="div" mt={2} fontSize={{ base: "2xs", sm: "xs", md: "sm" }} color="gray.600">
-              ⭐ 1000+ Happy Clients • ⭐ 500+ Plots Sold • ⭐ 10+ Years Experience
+            Limited Time Offer
+          </Badge>
+
+          <Heading 
+            fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
+            lineHeight="1.2"
+            animation={`${fadeIn} 0.5s ease-out`}
+          >
+            <Text as="span" color="gray.800">Find Your </Text>
+            <Text as="span" color="green.600" fontWeight="extrabold">Dream Land</Text>
+            <Text as="span" color="gray.800"> in </Text>
+            <Text as="span" bgGradient="linear(to-r, green.600, blue.500)" bgClip="text" fontWeight="extrabold">
+              Mbarara City
+            </Text>
+            <Text as="span" color="gray.800"> & Beyond</Text>
+          </Heading>
+          
+          <Text 
+            fontSize={{ base: "sm", md: "md" }} 
+            color="gray.700"
+            lineHeight="tall"
+            animation={`${fadeIn} 0.5s ease-out 0.1s both`}
+          >
+            <Text as="span" fontWeight="bold" color="green.700" fontSize="lg">Zalseef Estates</Text>
+            <Text as="span" display="block" mt={1}>
+              Mbarara's most trusted land dealer offering{' '}
+              <Text as="span" fontWeight="bold" color="green.600">lowest prices</Text> •{' '}
+              <Text as="span" fontWeight="bold" color="blue.600">best locations</Text> •{' '}
+              <Text as="span" fontWeight="bold" color="purple.600">clear titles</Text>
             </Text>
           </Text>
 
-          {/* Features Pills */}
-          <HStack spacing={3} flexWrap="wrap" animation={`${fadeIn} 0.8s ease-out 0.5s both`}>
-            {['Agricultural', 'Commercial', 'Residential'].map((type) => (
-              <Box
-                key={type}
-                px={{ base: 3, md: 4 }}
-                py={{ base: 1, md: 2 }}
-                bg="white"
-                borderRadius="full"
-                boxShadow="md"
-                border="1px solid"
-                borderColor="green.100"
-                _hover={{ bg: 'green.50', transform: 'scale(1.05)' }}
-                transition="all 0.2s"
-              >
-                <Text fontSize={{ base: "xs", md: "sm" }} fontWeight="medium" color="green.700">
-                  {type}
-                </Text>
-              </Box>
-            ))}
-          </HStack>
-
-          {/* CTA Buttons - FIXED: Better mobile spacing */}
-          <VStack 
-            spacing={3} 
-            pt={4} 
-            animation={`${fadeIn} 0.8s ease-out 0.6s both`}
-            w="100%"
-          >
-            <Link to="/land-for-sale" style={{ width: "100%" }}>
+          {/* CTA Section */}
+          <HStack spacing={3} mt={2} animation={`${fadeIn} 0.5s ease-out 0.2s both`}>
+            <Link to="/land-for-sale">
               <Button
-                size="md"
+                size={{ base: "md", md: "lg" }}
                 colorScheme="green"
-                px={6}
+                px={8}
                 py={6}
-                fontSize="md"
+                fontSize={{ base: "sm", md: "md" }}
+                fontWeight="bold"
                 borderRadius="full"
                 bgGradient="linear(to-r, green.500, green.600)"
-                w="100%"
-                h="auto"
-                whiteSpace="normal"
                 _hover={{
                   bgGradient: "linear(to-r, green.600, green.700)",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 10px 20px -5px rgba(56,161,105,0.4)"
+                  transform: "scale(1.05)",
+                }}
+                _active={{
+                  transform: "scale(0.95)",
                 }}
                 transition="all 0.2s"
+                boxShadow="0 4px 15px rgba(56, 161, 105, 0.3)"
               >
                 View Listings
               </Button>
             </Link>
-            <Link to="/contact" style={{ width: "100%" }}>
-              <Button
-                size="md"
-                variant="outline"
-                colorScheme="green"
-                px={6}
-                py={6}
-                fontSize="md"
-                borderRadius="full"
-                borderWidth="2px"
-                w="100%"
-                h="auto"
-                whiteSpace="normal"
-                _hover={{
-                  bg: 'green.50',
-                  transform: 'translateY(-2px)',
-                  borderColor: 'green.600'
-                }}
-                transition="all 0.2s"
-              >
-                Schedule Visit
-              </Button>
-            </Link>
-          </VStack>
+            <Text fontSize="sm" color="gray.500" fontWeight="medium">
+              From 2M UGX
+            </Text>
+          </HStack>
 
-          {/* Stats with animated counters */}
-          <HStack
-            spacing={{ base: 2, sm: 3, md: 4, lg: 8 }}
-            pt={6}
-            mt={2}
-            borderTop="2px solid"
-            borderColor="green.100"
-            animation={`${fadeIn} 0.8s ease-out 0.7s both`}
+          {/* Stats with Animated Counters */}
+          <HStack 
+            spacing={{ base: 6, md: 10 }} 
+            pt={4} 
             flexWrap="wrap"
+            animation={`${fadeIn} 0.5s ease-out 0.3s both`}
           >
             {stats.map((stat, index) => (
-              <VStack key={index} align="start" spacing={0} flex="1" minW="70px">
+              <VStack 
+                key={index} 
+                align="flex-start" 
+                spacing={0}
+                position="relative"
+                _after={index < stats.length - 1 ? {
+                  content: '""',
+                  position: "absolute",
+                  right: "-15px",
+                  top: "10%",
+                  height: "80%",
+                  width: "1px",
+                  bg: "green.200",
+                } : {}}
+              >
                 <HStack spacing={1}>
-                  <AnimatedCounter value={stat.numeric} suffix={stat.value.replace(/\d/g, '')} />
-                  <Icon as={BiPlus} color="green.400" boxSize={{ base: 3, md: 4, lg: 5 }} />
+                  <AnimatedCounter value={stat.value} />
+                  <Text fontSize="sm" color="green.500">↑</Text>
                 </HStack>
-                <Text fontSize={{ base: "2xs", sm: "xs", md: "sm" }} color="gray.600" fontWeight="medium">
+                <Text fontSize={{ base: "xs", md: "sm" }} color="gray.600" fontWeight="medium">
                   {stat.label}
                 </Text>
               </VStack>
             ))}
           </HStack>
 
-          {/* Trust badges */}
-          <HStack spacing={{ base: 2, sm: 3, md: 4 }} pt={4} opacity={0.8} flexWrap="wrap">
+          {/* Trust Indicators */}
+          <HStack spacing={4} pt={2} opacity={0.8}>
             <HStack spacing={1}>
-              <Icon as={BiCheckShield} color="green.500" boxSize={{ base: 3, md: 4 }} />
-              <Text fontSize={{ base: "2xs", sm: "xs", md: "xs" }} color="gray.600">Verified Titles</Text>
+              <Box w="2px" h="2px" bg="green.400" borderRadius="full" />
+              <Text fontSize="xs" color="gray.500">Verified Titles</Text>
             </HStack>
             <HStack spacing={1}>
-              <Icon as={BiTrendingUp} color="green.500" boxSize={{ base: 3, md: 4 }} />
-              <Text fontSize={{ base: "2xs", sm: "xs", md: "xs" }} color="gray.600">Prime Locations</Text>
+              <Box w="2px" h="2px" bg="green.400" borderRadius="full" />
+              <Text fontSize="xs" color="gray.500">Free Site Visit</Text>
             </HStack>
             <HStack spacing={1}>
-              <Icon as={FaHome} color="green.500" boxSize={{ base: 3, md: 4 }} />
-              <Text fontSize={{ base: "2xs", sm: "xs", md: "xs" }} color="gray.600">Ready to Build</Text>
+              <Box w="2px" h="2px" bg="green.400" borderRadius="full" />
+              <Text fontSize="xs" color="gray.500">24/7 Support</Text>
             </HStack>
           </HStack>
         </VStack>
 
-        {/* Right Images - FIXED: No gaps, perfectly positioned */}
-        <Box
-          flex="1"
+        {/* Right Images - Full height */}
+        <Box 
+          flex="1" 
           position="relative"
-          h={{ base: "400px", sm: "450px", md: "500px", lg: "100%" }}
-          minH={{ base: "400px", sm: "450px", md: "500px", lg: "auto" }}
-          bg="green.900"
+          minH={{ base: "300px", md: "400px", lg: "500px" }}
+          bgGradient="linear(to-br, green.800, green.900)"
           overflow="hidden"
         >
-          {/* First Image - Full size */}
+          {/* Decorative Elements */}
+          <Box
+            position="absolute"
+            top="-10%"
+            right="-10%"
+            w="200px"
+            h="200px"
+            bg="green.400"
+            filter="blur(60px)"
+            opacity={0.2}
+            borderRadius="full"
+            animation={`${float} 6s ease-in-out infinite`}
+          />
+          <Box
+            position="absolute"
+            bottom="-10%"
+            left="-10%"
+            w="200px"
+            h="200px"
+            bg="blue.400"
+            filter="blur(60px)"
+            opacity={0.2}
+            borderRadius="full"
+            animation={`${float} 8s ease-in-out infinite`}
+          />
+
+          {/* First Image - Full background */}
           <Box
             position="absolute"
             top="0"
@@ -287,20 +281,38 @@ const Banner = () => {
               w="100%"
               h="100%"
               objectFit="cover"
+              opacity={0.95}
+            />
+            {/* Gradient Overlay */}
+            <Box
+              position="absolute"
+              top="0"
+              left="0"
+              right="0"
+              bottom="0"
+              bg="linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 50%)"
             />
           </Box>
 
-          {/* Second Image - Positioned absolutely */}
+  
+
+          {/* Second Image - Floating overlay */}
           <Box
             position="absolute"
-            bottom={{ base: "5%", md: "8%", lg: "10%" }}
-            right={{ base: "5%", md: "8%", lg: "10%" }}
-            w={{ base: "50%", md: "45%", lg: "40%" }}
-            h={{ base: "35%", md: "40%", lg: "45%" }}
-            borderRadius="xl"
+            bottom={{ base: "5%", md: "8%" }}
+            right={{ base: "5%", md: "8%" }}
+            w={{ base: "50%", md: "45%" }}
+            h={{ base: "35%", md: "40%" }}
+            borderRadius="lg"
             overflow="hidden"
-            boxShadow="dark-lg"
-            border="4px solid white"
+            boxShadow="0 20px 30px -10px rgba(0,0,0,0.5)"
+            border="3px solid white"
+            zIndex={2}
+            transition="all 0.3s"
+            _hover={{
+              transform: "scale(1.05) translateY(-5px)",
+              boxShadow: "0 30px 40px -10px rgba(0,0,0,0.6)",
+            }}
           >
             <Image
               src={MbararaLand2}
@@ -309,32 +321,36 @@ const Banner = () => {
               h="100%"
               objectFit="cover"
             />
+            <Box
+              position="absolute"
+              bottom="0"
+              left="0"
+              right="0"
+              p={2}
+              bg="linear-gradient(to top, rgba(0,0,0,0.7), transparent)"
+            >
+              <Text color="white" fontSize="xs" fontWeight="bold">
+                📍 Prime Location
+              </Text>
+            </Box>
           </Box>
 
-          {/* Gradient overlay for better text contrast */}
-          <Box
+          {/* Watermark */}
+          <Text
             position="absolute"
-            top="0"
-            left="0"
-            right="0"
-            bottom="0"
-            bg="linear-gradient(to top, rgba(0,0,0,0.3), transparent)"
-            pointerEvents="none"
-          />
+            bottom="2%"
+            left="5%"
+            color="whiteAlpha.500"
+            fontSize="xs"
+            fontWeight="bold"
+            textTransform="uppercase"
+            letterSpacing="wider"
+            zIndex={1}
+          >
+            ZALSEEF ESTATES
+          </Text>
         </Box>
       </Stack>
-
-      {/* Bottom fade effect */}
-      <Box
-        position="absolute"
-        bottom="-40px"
-        left={0}
-        right={0}
-        h="80px"
-        bgGradient="linear(to-t, green.50, transparent)"
-        zIndex={0}
-        pointerEvents="none"
-      />
     </Box>
   );
 };
