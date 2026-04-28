@@ -1,300 +1,552 @@
 import {
+    Avatar,
     Box,
-    Container,
+    Button,
     Heading,
-    Text,
-    VStack,
     HStack,
     Icon,
-    Badge,
-    Divider,
     SimpleGrid,
-    Button,
-    Avatar
+    Text,
+    VStack
 } from '@chakra-ui/react';
 import {
-    FaMapMarkerAlt,
-    FaPhone,
-    FaEnvelope,
+    FaBuilding,
     FaClock,
     FaDirections,
+    FaEnvelope,
+    FaExternalLinkAlt,
+    FaMapMarkerAlt,
     FaParking,
-    FaWheelchair,
+    FaPhone,
     FaShieldAlt,
-    FaBuilding
+    FaWheelchair
 } from 'react-icons/fa';
 
+const officeLocation = {
+    name: 'Zalseef Estates',
+    officeLabel: 'Head Office',
+    landmark: 'St Paul Shopping Mall',
+    place: 'St Paul Shopping Mall, Room C10',
+    city: 'Mbarara City, Uganda',
+    email: 'zalseefmhd256@gmail.com',
+    phone: '+256 708 124902',
+    latitude: -0.6081090765287931,
+    longitude: 30.66326096083762
+};
+
+const mapCenter = `${officeLocation.latitude},${officeLocation.longitude}`;
+const mapQuery = `${officeLocation.landmark}, Mbarara, Uganda ${mapCenter}`;
+const mapEmbedSrc = `https://maps.google.com/maps?hl=en&q=${encodeURIComponent(officeLocation.landmark)}&ll=${officeLocation.latitude},${officeLocation.longitude}&z=18&output=embed`;
+const openInMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
+const coordinatesLabel = `${Math.abs(officeLocation.latitude).toFixed(6)} deg S, ${officeLocation.longitude.toFixed(6)} deg E`;
+
+const detailCardStyles = {
+    p: 4,
+    h: '100%',
+    borderRadius: 'lg',
+    border: '1px solid',
+    borderColor: 'gray.200',
+    bg: 'linear-gradient(180deg, #ffffff 0%, #f7faf8 100%)',
+    boxShadow: '0 8px 18px rgba(15, 23, 42, 0.05)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    transition: 'all 0.25s ease',
+    _hover: {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 14px 24px rgba(15, 23, 42, 0.08)',
+        borderColor: 'green.100'
+    }
+};
+
+const utilityCardStyles = {
+    px: 5,
+    py: 3,
+    h: '100%',
+    minH: '64px',
+    w: '100%',
+    maxW: '100%',
+    borderRadius: '2xl',
+    border: '1px solid',
+    borderColor: 'green.100',
+    bg: 'linear-gradient(180deg, #f4fff8 0%, #ecfff4 100%)',
+    boxShadow: 'sm',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.25s ease',
+    _hover: {
+        transform: 'translateY(-3px)',
+        borderColor: 'green.200',
+        boxShadow: '0 14px 24px rgba(56, 161, 105, 0.12)'
+    }
+};
+
+const summaryCardStyles = {
+    w: '100%',
+    maxW: '100%',
+    minH: '72px',
+    px: 5,
+    py: 3.5,
+    borderRadius: '2xl',
+    bg: 'linear-gradient(135deg, #2f855a 0%, #2d9361 100%)',
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 10px 20px rgba(47, 133, 90, 0.16)',
+    transition: 'all 0.25s ease',
+    _hover: {
+        transform: 'translateY(-3px)',
+        boxShadow: '0 16px 28px rgba(47, 133, 90, 0.22)',
+        bg: 'linear-gradient(135deg, #276749 0%, #2f855a 100%)'
+    }
+};
+
+const primaryActionButtonStyles = {
+    size: 'sm',
+    h: '40px',
+    px: 4,
+    fontSize: 'sm',
+    borderRadius: 'full',
+    fontWeight: 'semibold',
+    boxShadow: '0 10px 18px rgba(56, 161, 105, 0.16)',
+    _hover: {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 14px 24px rgba(56, 161, 105, 0.22)'
+    },
+    _active: {
+        transform: 'translateY(0)'
+    },
+    transition: 'all 0.25s ease'
+};
+
+const secondaryActionButtonStyles = {
+    size: 'sm',
+    h: '40px',
+    px: 4,
+    fontSize: 'sm',
+    borderRadius: 'full',
+    fontWeight: 'semibold',
+    borderWidth: '1px',
+    _hover: {
+        transform: 'translateY(-2px)'
+    },
+    _active: {
+        transform: 'translateY(0)'
+    },
+    transition: 'all 0.25s ease'
+};
+
+const officeHours = [
+    { day: 'Mon - Fri', hours: '8:00 AM - 6:00 PM' },
+    { day: 'Saturday', hours: '9:00 AM - 5:00 PM' },
+    { day: 'Sunday', hours: 'By appointment' }
+];
+
+const amenities = [
+    { icon: FaParking, label: 'Free Parking' },
+    { icon: FaWheelchair, label: 'Wheelchair Access' },
+    { icon: FaShieldAlt, label: '24/7 Security' }
+];
+
 const Location = () => {
-    // Coordinates for St Paul Shopping Mall, Mbarara
-    const latitude = -0.61;
-    const longitude = 30.66;
-
-    // Google Maps embed URL with marker pin
-    const googleMapsSrc = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=St+Paul+Shopping+Mall+Mbarara+Uganda&center=${latitude},${longitude}&zoom=18&maptype=roadmap`;
-
     return (
-        <Container maxW="container.xl" py={{ base: 6, md: 10 }}>
-            <VStack spacing={8} align="stretch">
-                {/* Header */}
-                <VStack spacing={3} textAlign="center">
-                    <Badge colorScheme="green" fontSize="md" px={4} py={1} borderRadius="full" textTransform="uppercase">
-                        Visit Us Today
-                    </Badge>
-                    <Heading
-                        size={{ base: "lg", md: "xl" }}
-                        bgGradient="linear(to-r, green.700, green.500)"
-                        bgClip="text"
-                    >
-                        Our Office Location
-                    </Heading>
-                    <Text fontSize={{ base: "sm", md: "md" }} color="gray.600" maxW="600px">
-                        Come see us at St Paul Shopping Mall in the heart of Mbarara city. We're here to help you find your perfect land.
-                    </Text>
-                </VStack>
+        <Box w="100%" minH="100vh" bg="white" overflowX="hidden">
+            <Box w="100%" maxW="1460px" mx="auto" px={{ base: 3, md: 4, lg: 5 }} py={{ base: 4, md: 6 }}>
+                <VStack spacing={5} align="stretch">
+                    <VStack spacing={2} textAlign="center">
+                        <Text
+                            fontSize="xs"
+                            fontWeight="bold"
+                            letterSpacing="0.18em"
+                            textTransform="uppercase"
+                            color="green.600"
+                        >
+                            Visit Our Office
+                        </Text>
+                        <Heading size="xl" color="green.700">
+                            Our Office Location
+                        </Heading>
+                        <Text fontSize="md" color="gray.600" maxW="700px">
+                            Find Zalseef Estates at St Paul Shopping Mall in Mbarara. The map below is pinned to the exact office coordinates you provided.
+                        </Text>
+                    </VStack>
 
-                {/* Map and Info Grid - Equal height */}
-                <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
-                    {/* Map Container - Same height as info side */}
-                    <Box
-                        borderRadius="xl"
-                        overflow="hidden"
-                        boxShadow="lg"
-                        border="1px solid"
-                        borderColor="green.100"
-                        height={{ base: "350px", lg: "550px" }}
-                    >
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7536!2d30.66!3d-0.61!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19ddf6b7b8b8b8b%3A0x8b8b8b8b8b8b8b!2sSt%20Paul%20Shopping%20Mall!5e0!3m2!1sen!2sug!4v1234567890!5m2!1sen!2sug"
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title="Zalseef Estates Office Location - St Paul Shopping Mall, Mbarara"
-                        />
-                    </Box>
+                    <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5} alignItems="stretch">
+                        <Box
+                            bg="white"
+                            borderRadius="2xl"
+                            overflow="hidden"
+                            boxShadow="lg"
+                            border="1px solid"
+                            borderColor="green.100"
+                            display="flex"
+                            flexDirection="column"
+                            h="100%"
+                        >
+                            <HStack
+                                justify="space-between"
+                                align={{ base: 'start', md: 'center' }}
+                                flexWrap="wrap"
+                                gap={3}
+                                p={{ base: 3.5, md: 4 }}
+                                bg="linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%)"
+                                borderBottom="1px solid"
+                                borderColor="green.100"
+                            >
+                                <VStack align="start" spacing={1}>
+                                    <HStack spacing={2} color="green.700">
+                                        <Icon as={FaMapMarkerAlt} boxSize={4} />
+                                        <Text fontSize="sm" fontWeight="bold" textTransform="uppercase" letterSpacing="0.1em">
+                                            Exact Office Pin
+                                        </Text>
+                                    </HStack>
+                                    <Text fontWeight="semibold" color="gray.800">
+                                        Marker set to {officeLocation.landmark}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.600">
+                                        {coordinatesLabel}
+                                    </Text>
+                                </VStack>
+                                <Button
+                                    as="a"
+                                    href={openInMapsUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    bg="white"
+                                    color="green.700"
+                                    leftIcon={<FaExternalLinkAlt />}
+                                    border="1px solid"
+                                    borderColor="whiteAlpha.700"
+                                    {...secondaryActionButtonStyles}
+                                    boxShadow="0 8px 16px rgba(15, 23, 42, 0.08)"
+                                    _hover={{
+                                        bg: 'white',
+                                        color: 'green.800',
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: '0 12px 20px rgba(15, 23, 42, 0.12)'
+                                    }}
+                                >
+                                    Open in Maps
+                                </Button>
+                            </HStack>
 
-                    {/* Office Info - Same height as map */}
-                    <Box
-                        bg="white"
-                        borderRadius="xl"
-                        boxShadow="lg"
-                        border="1px solid"
-                        borderColor="green.100"
-                        overflow="hidden"
-                        height={{ base: "auto", lg: "550px" }}
-                        display="flex"
-                        flexDirection="column"
-                    >
-                        {/* Header with building icon */}
-                        <HStack bg="green.50" p={4} borderBottom="1px solid" borderColor="green.100">
-                            <Avatar icon={<FaBuilding />} bg="green.500" color="white" size="sm" />
-                            <VStack align="start" spacing={0}>
-                                <Text fontWeight="bold" fontSize="lg">Zalseef Estates</Text>
-                                <Text fontSize="sm" color="gray.600">Head Office · Mbarara CBD</Text>
+                            <Box flex="1" minH={{ base: '320px', md: '430px', xl: '520px' }}>
+                                <iframe
+                                    src={mapEmbedSrc}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Zalseef Estates office map"
+                                />
+                            </Box>
+
+                            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3} p={{ base: 3, md: 4 }} bg="gray.50" alignItems="stretch">
+                                <Box {...detailCardStyles}>
+                                    <HStack mb={2} color="green.600">
+                                        <Icon as={FaMapMarkerAlt} />
+                                        <Text fontWeight="bold">Coordinates</Text>
+                                    </HStack>
+                                    <Text fontSize="sm" color="gray.700">
+                                        Latitude: {officeLocation.latitude}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.700">
+                                        Longitude: {officeLocation.longitude}
+                                    </Text>
+                                </Box>
+
+                                <Box {...detailCardStyles}>
+                                    <HStack mb={2} color="green.600">
+                                        <Icon as={FaBuilding} />
+                                        <Text fontWeight="bold">Landmark</Text>
+                                    </HStack>
+                                    <Text fontSize="sm" color="gray.800" fontWeight="semibold">
+                                        {officeLocation.landmark}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.600">
+                                        {officeLocation.place}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.500">
+                                        {officeLocation.city}
+                                    </Text>
+                                </Box>
+                            </SimpleGrid>
+                        </Box>
+
+                        <Box
+                            bg="white"
+                            borderRadius="2xl"
+                            boxShadow="lg"
+                            border="1px solid"
+                            borderColor="green.100"
+                            overflow="hidden"
+                            h="100%"
+                            display="flex"
+                            flexDirection="column"
+                        >
+                            <HStack
+                                p={{ base: 3.5, md: 4 }}
+                                spacing={3}
+                                bg="linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%)"
+                                borderBottom="1px solid"
+                                borderColor="green.100"
+                            >
+                                <Avatar icon={<FaBuilding />} bg="green.500" color="white" size="md" />
+                                <VStack align="start" spacing={0}>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        {officeLocation.name}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.600">
+                                        {officeLocation.officeLabel} | Mbarara CBD
+                                    </Text>
+                                </VStack>
+                            </HStack>
+
+                            <VStack align="stretch" p={4} spacing={4} flex="1" justify="space-between">
+                                <VStack align="stretch" spacing={4}>
+                                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} alignItems="stretch">
+                                        <Box {...detailCardStyles}>
+                                            <HStack mb={3} color="green.600">
+                                                <Icon as={FaMapMarkerAlt} />
+                                                <Text fontWeight="bold">Office Address</Text>
+                                            </HStack>
+                                            <VStack align="start" spacing={1}>
+                                                <Text fontSize="sm" color="gray.800" fontWeight="semibold">
+                                                    {officeLocation.landmark}
+                                                </Text>
+                                                <Text fontSize="sm" color="gray.700">
+                                                    {officeLocation.place}
+                                                </Text>
+                                                <Text fontSize="sm" color="gray.500">
+                                                    {officeLocation.city}
+                                                </Text>
+                                            </VStack>
+                                        </Box>
+
+                                        <Box {...detailCardStyles}>
+                                            <HStack mb={3} color="green.600">
+                                                <Icon as={FaDirections} />
+                                                <Text fontWeight="bold">Navigation</Text>
+                                            </HStack>
+                                            <VStack align="start" spacing={1}>
+                                                <Text fontSize="sm" color="gray.800">
+                                                    Google Maps opens directly to St Paul Shopping Mall and centers on your exact office coordinates.
+                                                </Text>
+                                                <Text fontSize="sm" color="gray.600">
+                                                    {coordinatesLabel}
+                                                </Text>
+                                            </VStack>
+                                        </Box>
+                                    </SimpleGrid>
+
+                                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} alignItems="stretch">
+                                        <Box {...detailCardStyles}>
+                                            <HStack mb={3} color="green.600">
+                                                <Icon as={FaPhone} />
+                                                <Text fontWeight="bold">Contact</Text>
+                                            </HStack>
+                                            <VStack align="start" spacing={2}>
+                                                <Text fontSize="sm" fontWeight="semibold" color="gray.800">
+                                                    {officeLocation.phone}
+                                                </Text>
+                                                <Text fontSize="sm" color="gray.700">
+                                                    {officeLocation.email}
+                                                </Text>
+                                            </VStack>
+                                        </Box>
+
+                                        <Box {...detailCardStyles}>
+                                            <HStack mb={3} color="green.600">
+                                                <Icon as={FaClock} />
+                                                <Text fontWeight="bold">Office Hours</Text>
+                                            </HStack>
+                                            <VStack align="stretch" spacing={2}>
+                                                {officeHours.map((item) => (
+                                                    <HStack key={item.day} justify="space-between" fontSize="sm">
+                                                        <Text color="gray.700">{item.day}</Text>
+                                                        <Text color="gray.800" fontWeight="medium">
+                                                            {item.hours}
+                                                        </Text>
+                                                    </HStack>
+                                                ))}
+                                            </VStack>
+                                        </Box>
+                                    </SimpleGrid>
+                                </VStack>
+
+                                <Box
+                                    bg="linear-gradient(180deg, #f8fffb 0%, #effaf4 100%)"
+                                    border="1px solid"
+                                    borderColor="green.100"
+                                    borderRadius="2xl"
+                                    p={{ base: 3, md: 3.5 }}
+                                    boxShadow="sm"
+                                >
+                                    <VStack spacing={3}>
+                                        <Text
+                                            fontSize="xs"
+                                            fontWeight="bold"
+                                            letterSpacing="0.16em"
+                                            textTransform="uppercase"
+                                            color="green.600"
+                                        >
+                                            Quick Actions
+                                        </Text>
+                                        <Box display="flex" flexWrap="wrap" gap={2.5} alignItems="center" justifyContent="center">
+                                            <Button
+                                                as="a"
+                                                href={directionsUrl}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                leftIcon={<FaDirections />}
+                                                justifyContent="center"
+                                                bg="green.600"
+                                                color="white"
+                                                w={{ base: '100%', sm: 'auto' }}
+                                                {...primaryActionButtonStyles}
+                                                _hover={{
+                                                    bg: 'green.700',
+                                                    transform: 'translateY(-2px)',
+                                                    boxShadow: '0 14px 24px rgba(56, 161, 105, 0.22)'
+                                                }}
+                                            >
+                                                Get Directions
+                                            </Button>
+                                            <Button
+                                                as="a"
+                                                href={`mailto:${officeLocation.email}`}
+                                                leftIcon={<FaEnvelope />}
+                                                justifyContent="center"
+                                                bg="white"
+                                                color="green.700"
+                                                borderColor="green.200"
+                                                w={{ base: '100%', sm: 'auto' }}
+                                                {...secondaryActionButtonStyles}
+                                                _hover={{
+                                                    bg: 'green.50',
+                                                    borderColor: 'green.300',
+                                                    color: 'green.800',
+                                                    transform: 'translateY(-2px)'
+                                                }}
+                                            >
+                                                Email Office
+                                            </Button>
+                                            <Button
+                                                as="a"
+                                                href={`tel:${officeLocation.phone.replace(/\s+/g, '')}`}
+                                                leftIcon={<FaPhone />}
+                                                justifyContent="center"
+                                                bg="gray.900"
+                                                color="white"
+                                                w={{ base: '100%', sm: 'auto' }}
+                                                {...secondaryActionButtonStyles}
+                                                borderColor="gray.900"
+                                                _hover={{
+                                                    bg: 'gray.800',
+                                                    borderColor: 'gray.800',
+                                                    transform: 'translateY(-2px)'
+                                                }}
+                                            >
+                                                Call Now
+                                            </Button>
+                                        </Box>
+                                    </VStack>
+                                </Box>
                             </VStack>
-                        </HStack>
+                        </Box>
+                    </SimpleGrid>
 
-                        {/* Info Sections - Scrollable if needed */}
-                        <VStack align="stretch" p={6} spacing={5} overflowY="auto" flex="1">
-
-                            {/* Address Card */}
+                    <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={3} alignItems="stretch">
+                        {amenities.map((item) => (
                             <Box
-                                p={4}
-                                bg="gray.50"
-                                borderRadius="lg"
-                                border="1px solid"
-                                borderColor="green.100"
+                                key={item.label}
+                                {...utilityCardStyles}
                             >
-                                <HStack mb={2} color="green.600">
-                                    <Icon as={FaMapMarkerAlt} boxSize={5} />
-                                    <Text fontWeight="bold" fontSize="md">Address</Text>
-                                </HStack>
-                                <VStack align="start" pl={7} spacing={0}>
-                                    <Text fontWeight="medium">St Paul Shopping Mall, Room C10</Text>
-                                    <Text color="gray.600">Mbarara City, Uganda</Text>
-                                    <HStack mt={1}>
-                                        <Badge colorScheme="green" variant="outline">Room C10</Badge>
-                                    </HStack>
-                                </VStack>
-                            </Box>
-
-                            {/* Contact Card - Two columns */}
-                            <Box
-                                p={4}
-                                bg="gray.50"
-                                borderRadius="lg"
-                                border="1px solid"
-                                borderColor="green.100"
-                            >
-                                <HStack mb={3} color="green.600">
-                                    <Icon as={FaPhone} boxSize={5} />
-                                    <Text fontWeight="bold" fontSize="md">Contact</Text>
-                                </HStack>
-                                <SimpleGrid columns={2} spacing={4} pl={7}>
-                                    <VStack align="start" spacing={1}>
-                                        <Text fontWeight="medium" fontSize="sm">Phone</Text>
-                                        <Text fontSize="sm" fontWeight="bold">+256 708 124902</Text>
-                                        <Text fontSize="xs" color="gray.500">Mon-Sun: 8AM-6PM</Text>
-                                    </VStack>
-                                    <VStack align="start" spacing={1}>
-                                        <Text fontWeight="medium" fontSize="sm">Email</Text>
-                                        <Text fontSize="sm" fontWeight="bold">zalseefmhd256</Text>
-                                        <Text fontSize="xs" color="gray.600">@gmail.com</Text>
-                                    </VStack>
-                                </SimpleGrid>
-                            </Box>
-
-                            {/* Hours Card */}
-                            <Box
-                                p={4}
-                                bg="gray.50"
-                                borderRadius="lg"
-                                border="1px solid"
-                                borderColor="green.100"
-                            >
-                                <HStack mb={3} color="green.600">
-                                    <Icon as={FaClock} boxSize={5} />
-                                    <Text fontWeight="bold" fontSize="md">Office Hours</Text>
-                                </HStack>
-                                <VStack align="stretch" pl={7} spacing={2}>
-                                    <HStack justify="space-between">
-                                        <Text fontSize="sm">Monday - Friday</Text>
-                                        <Badge colorScheme="green" fontSize="sm" px={3}>24/7</Badge>
-                                    </HStack>
-                                    <HStack justify="space-between">
-                                        <Text fontSize="sm">Saturday</Text>
-                                        <Text fontSize="sm" fontWeight="medium">8:00 AM - 6:00 PM</Text>
-                                    </HStack>
-                                    <HStack justify="space-between">
-                                        <Text fontSize="sm">Sunday</Text>
-                                        <Text fontSize="sm" fontWeight="medium" color="green.600">10:00 AM - 4:00 PM</Text>
-                                    </HStack>
-                                </VStack>
-                            </Box>
-
-
-                            {/* Get Directions Button - Smaller Width */}
-                            <Button
-                                as="a"
-                                href="https://www.google.com/maps/dir/?api=1&destination=St+Paul+Shopping+Mall+Mbarara+Uganda"
-                                target="_blank"
-                                size="md"
-                                w="auto"
-                                minW="200px"
-                                px={8}
-                                py={4}
-                                leftIcon={<FaDirections size={16} />}
-                                bgGradient="linear(to-r, green.500, green.600)"
-                                color="white"
-                                fontSize="sm"
-                                fontWeight="bold"
-                                letterSpacing="0.3px"
-                                borderRadius="12px"
-                                border="none"
-                                boxShadow="0 2px 10px rgba(56, 161, 105, 0.3)"
-                                transition="all 0.3s"
-                                position="relative"
-                                overflow="hidden"
-                                mx="auto"
-                                display="flex"
-                                _before={{
-                                    content: '""',
-                                    position: 'absolute',
-                                    top: '0',
-                                    left: '-100%',
-                                    width: '100%',
-                                    height: '100%',
-                                    bg: 'whiteAlpha.300',
-                                    transition: 'all 0.5s',
-                                }}
-                                _hover={{
-                                    transform: 'translateY(-2px)',
-                                    bgGradient: 'linear(to-r, green.600, green.700)',
-                                    boxShadow: '0 4px 15px rgba(56, 161, 105, 0.4)',
-                                    _before: {
-                                        left: '100%',
-                                    },
-                                }}
-                                _active={{
-                                    transform: 'translateY(-1px)',
-                                    bgGradient: 'linear(to-r, green.700, green.800)',
-                                }}
-                            >
-                                <HStack spacing={2} justify="center" w="full">
-                                    <Text>Get Directions</Text>
+                                <HStack spacing={3}>
                                     <Box
-                                        as="span"
-                                        fontSize="2xs"
-                                        bg="whiteAlpha.300"
-                                        px={1.5}
-                                        py={0.5}
+                                        w="36px"
+                                        h="36px"
                                         borderRadius="full"
+                                        bg="white"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        boxShadow="inset 0 0 0 1px rgba(56, 161, 105, 0.12)"
                                     >
-                                        Maps
+                                        <Icon as={item.icon} color="green.600" boxSize={4} />
                                     </Box>
+                                    <Text fontSize="sm" fontWeight="medium" color="gray.800">
+                                        {item.label}
+                                    </Text>
                                 </HStack>
-                            </Button>
-                        </VStack>
-                    </Box>
-                </SimpleGrid>
+                            </Box>
+                        ))}
+                    </SimpleGrid>
 
-                {/* Amenities Bar */}
-                <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={4} mt={4}>
-                    <HStack spacing={3} p={4} bg="green.50" borderRadius="lg" justify="center">
-                        <Icon as={FaParking} color="green.600" boxSize={5} />
-                        <VStack align="start" spacing={0}>
-                            <Text fontWeight="bold" fontSize="sm">Free Parking</Text>
-                            <Text fontSize="xs" color="gray.600">Available</Text>
-                        </VStack>
-                    </HStack>
-
-                    <HStack spacing={3} p={4} bg="green.50" borderRadius="lg" justify="center">
-                        <Icon as={FaWheelchair} color="green.600" boxSize={5} />
-                        <VStack align="start" spacing={0}>
-                            <Text fontWeight="bold" fontSize="sm">Wheelchair Access</Text>
-                            <Text fontSize="xs" color="gray.600">Fully accessible</Text>
-                        </VStack>
-                    </HStack>
-
-                    <HStack spacing={3} p={4} bg="green.50" borderRadius="lg" justify="center">
-                        <Icon as={FaShieldAlt} color="green.600" boxSize={5} />
-                        <VStack align="start" spacing={0}>
-                            <Text fontWeight="bold" fontSize="sm">Secure Location</Text>
-                            <Text fontSize="xs" color="gray.600">24/7 security</Text>
-                        </VStack>
-                    </HStack>
-                </SimpleGrid>
-                {/* Quick Info Bar - Reduced Width */}
-                <HStack
-                    spacing={4}
-                    justify="center"
-                    flexWrap="wrap"
-                    p={4}
-                    bg="green.600"
-                    color="white"
-                    borderRadius="lg"
-                    mt={4}
-                    mx="auto"
-                    maxW="800px"
-                    w="fit-content"
-                >
-                    <HStack>
-                        <Icon as={FaMapMarkerAlt} />
-                        <Text fontSize="sm"><strong>Coordinates:</strong> 0.61° S, 30.66° E</Text>
-                    </HStack>
-                    <HStack>
-                        <Icon as={FaPhone} />
-                        <Text fontSize="sm"><strong>Call:</strong> +256 708 124902</Text>
-                    </HStack>
-                    <HStack>
-                        <Icon as={FaClock} />
-                        <Text fontSize="sm"><strong>Open:</strong> 24/7 Weekdays</Text>
-                    </HStack>
-                </HStack>
-            </VStack>
-        </Container>
+                    <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={3} alignItems="stretch">
+                        <Box {...summaryCardStyles}>
+                            <HStack spacing={3}>
+                                <Box
+                                    w="36px"
+                                    h="36px"
+                                    borderRadius="full"
+                                    bg="whiteAlpha.250"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Icon as={FaMapMarkerAlt} />
+                                </Box>
+                                <Text fontSize="sm" fontWeight="medium">
+                                    {officeLocation.landmark}
+                                </Text>
+                            </HStack>
+                        </Box>
+                        <Box {...summaryCardStyles}>
+                            <HStack spacing={3}>
+                                <Box
+                                    w="36px"
+                                    h="36px"
+                                    borderRadius="full"
+                                    bg="whiteAlpha.250"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Icon as={FaPhone} />
+                                </Box>
+                                <Text fontSize="sm" fontWeight="medium">
+                                    {officeLocation.phone}
+                                </Text>
+                            </HStack>
+                        </Box>
+                        <Box {...summaryCardStyles}>
+                            <HStack spacing={3}>
+                                <Box
+                                    w="36px"
+                                    h="36px"
+                                    borderRadius="full"
+                                    bg="whiteAlpha.250"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Icon as={FaClock} />
+                                </Box>
+                                <Text fontSize="sm" fontWeight="medium">
+                                    Exact office pin with directions ready
+                                </Text>
+                            </HStack>
+                        </Box>
+                    </SimpleGrid>
+                </VStack>
+            </Box>
+        </Box>
     );
 };
 

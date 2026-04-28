@@ -13,46 +13,44 @@ import {
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { FaLock, FaUserShield } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaUserShield } from 'react-icons/fa';
 import { useAdmin } from '../../context/AdminContext';
 
 const AdminLogin = ({ onClose }) => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { loginAsAdmin } = useAdmin();
   const toast = useToast();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    // Simulate loading
-    setTimeout(() => {
-      const success = loginAsAdmin(password);
-      
-      if (success) {
-        toast({
-          title: 'Login Successful',
-          description: 'Welcome back, Admin!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        onClose?.();
-      } else {
-        setError('Invalid password');
-        toast({
-          title: 'Login Failed',
-          description: 'Incorrect admin password',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+    try {
+      await loginAsAdmin({ email, password });
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back, Admin!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      onClose?.();
+    } catch (loginError) {
+      setError(loginError.message || 'Unable to log in');
+      toast({
+        title: 'Login Failed',
+        description: loginError.message || 'Incorrect admin credentials',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -68,6 +66,24 @@ const AdminLogin = ({ onClose }) => {
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <VStack spacing={4} w="100%">
             <FormControl isInvalid={!!error}>
+              <InputGroup size="lg" mb={4}>
+                <InputLeftElement>
+                  <Icon as={FaEnvelope} color="green.500" />
+                </InputLeftElement>
+                <Input
+                  type="email"
+                  placeholder="Admin email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError('');
+                  }}
+                  focusBorderColor="green.500"
+                  borderRadius="full"
+                  bg="gray.50"
+                />
+              </InputGroup>
+
               <InputGroup size="lg">
                 <InputLeftElement>
                   <Icon as={FaLock} color="green.500" />

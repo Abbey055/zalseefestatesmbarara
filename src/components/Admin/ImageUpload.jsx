@@ -1,49 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
-  VStack,
-  HStack,
   Button,
   Text,
-  Image,
-  Icon,
-  Input,
-  FormControl,
-  FormLabel,
-  SimpleGrid,
   useToast,
+  VStack,
+  HStack,
+  Image,
+  SimpleGrid,
+  IconButton,
 } from '@chakra-ui/react';
-import { FaUpload, FaTrash, FaImage } from 'react-icons/fa';
+import { FaUpload, FaTrash } from 'react-icons/fa';
+
+import { uploadLandImage } from '../../lib/supabaseData';
 
 const ImageUpload = ({ onImagesChange, existingImages = [] }) => {
   const [images, setImages] = useState(existingImages);
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
+  useEffect(() => {
+    setImages(existingImages);
+  }, [existingImages]);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
     setUploading(true);
-
-    // Simulate upload (in production, you'd upload to server)
-    setTimeout(() => {
-      const newImages = files.map(file => ({
-        url: URL.createObjectURL(file),
-        file: file,
-        name: file.name
-      }));
-
-      const updatedImages = [...images, ...newImages];
+    
+    try {
+      const uploadedImage = await uploadLandImage(file);
+      const updatedImages = [...images, uploadedImage];
       setImages(updatedImages);
       onImagesChange(updatedImages);
-      setUploading(false);
 
       toast({
-        title: 'Images added',
-        description: `${files.length} image(s) uploaded successfully`,
+        title: 'Success',
+        description: 'Image uploaded to Supabase',
         status: 'success',
         duration: 2000,
       });
-    }, 500);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Upload failed',
+        status: 'error',
+        duration: 3000,
+      });
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
   };
 
   const handleRemoveImage = (index) => {
@@ -54,37 +62,32 @@ const ImageUpload = ({ onImagesChange, existingImages = [] }) => {
 
   return (
     <Box>
-      <FormControl mb={4}>
-        <FormLabel>Land Images</FormLabel>
-        <HStack spacing={4}>
-          <Button
-            as="label"
-            htmlFor="image-upload"
-            leftIcon={<FaUpload />}
-            colorScheme="green"
-            variant="outline"
-            cursor="pointer"
-            isLoading={uploading}
-            size="sm"
-          >
-            Upload Images
-          </Button>
-          <Input
-            id="image-upload"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-            display="none"
-          />
-          <Text fontSize="sm" color="gray.500">
-            {images.length} image(s) selected
-          </Text>
-        </HStack>
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <Button
+          as="label"
+          htmlFor="image-upload"
+          leftIcon={<FaUpload />}
+          colorScheme="green"
+          isLoading={uploading}
+          loadingText="Uploading..."
+          cursor="pointer"
+        >
+          Upload Image
+        </Button>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+        />
+        <Text fontSize="sm" color="gray.500">
+          {images.length} image(s)
+        </Text>
+      </HStack>
 
       {images.length > 0 && (
-        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={3} mt={4}>
+        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={3}>
           {images.map((img, index) => (
             <Box
               key={index}
@@ -111,21 +114,6 @@ const ImageUpload = ({ onImagesChange, existingImages = [] }) => {
                 onClick={() => handleRemoveImage(index)}
                 borderRadius="full"
               />
-              {!img.url && (
-                <Box
-                  position="absolute"
-                  bottom={0}
-                  left={0}
-                  right={0}
-                  bg="green.500"
-                  color="white"
-                  fontSize="2xs"
-                  textAlign="center"
-                  py={0.5}
-                >
-                  Existing
-                </Box>
-              )}
             </Box>
           ))}
         </SimpleGrid>

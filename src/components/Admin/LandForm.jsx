@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   VStack,
   HStack,
@@ -32,7 +32,7 @@ const LandForm = ({ land, onClose, isEditing }) => {
   const { addLand, updateLand } = useAdmin();
   const toast = useToast();
 
-  const [formData, setFormData] = useState({
+  const getDefaultFormData = () => ({
     name: '',
     landUse: 'Residential',
     description: '',
@@ -48,6 +48,8 @@ const LandForm = ({ land, onClose, isEditing }) => {
     offerEndDate: '',
     images: [],
   });
+  const [formData, setFormData] = useState(getDefaultFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [featureInput, setFeatureInput] = useState('');
 
@@ -61,15 +63,19 @@ const LandForm = ({ land, onClose, isEditing }) => {
         location: land.location || '',
         size: land.size || '',
         price: land.price || '',
-        hasTitle: land.hasTitle || true,
+        hasTitle: land.hasTitle ?? true,
         features: land.features || [],
-        isSold: land.isSold || false,
-        isOfferOfDay: land.isOfferOfDay || false,
+        isSold: land.isSold ?? false,
+        isOfferOfDay: land.isOfferOfDay ?? false,
         offerPrice: land.offerPrice || '',
         offerEndDate: land.offerEndDate || '',
         images: land.images || (land.image ? [land.image] : []),
       });
+      return;
     }
+
+    setFormData(getDefaultFormData());
+    setFeatureInput('');
   }, [land]);
 
   const handleChange = (e) => {
@@ -118,7 +124,7 @@ const LandForm = ({ land, onClose, isEditing }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -133,37 +139,66 @@ const LandForm = ({ land, onClose, isEditing }) => {
       return;
     }
 
+    setIsSubmitting(true);
+
     // Prepare data for saving
     const landData = {
       ...formData,
       price: parseInt(formData.price) || 0,
       offerPrice: formData.offerPrice ? parseInt(formData.offerPrice) : null,
-      // Use first image as main image if available
-      image: formData.images[0]?.url || formData.images[0] || land?.image || `/src/assets/images/lands/land${Math.floor(Math.random() * 48) + 1}.jpg`,
-      imageLg: formData.images[0]?.url || formData.images[0] || land?.imageLg || `/src/assets/images/lands/land${Math.floor(Math.random() * 48) + 1}lg.jpg`,
     };
 
-    if (isEditing) {
-      updateLand(land.id, landData);
+    // Use first uploaded image as main image
+    if (formData.images.length > 0) {
+      const firstImage = formData.images[0];
+      landData.image = firstImage.url || firstImage;
+      landData.imageLg = firstImage.url || firstImage;
+    } else if (!isEditing) {
+      // No image uploaded for new land
       toast({
-        title: 'Land Updated',
-        description: 'The land has been updated successfully',
-        status: 'success',
+        title: 'Image Required',
+        description: 'Please upload at least one image for the land',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
-    } else {
-      addLand(landData);
-      toast({
-        title: 'Land Added',
-        description: 'New land has been added successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      setIsSubmitting(false);
+      return;
     }
 
-    onClose();
+    try {
+      if (isEditing) {
+        await updateLand(land.id, landData);
+        toast({
+          title: 'Land Updated',
+          description: 'The land has been updated successfully',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        await addLand(landData);
+        toast({
+          title: 'Land Added',
+          description: 'New land has been added successfully',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+      onClose();
+    } catch (error) {
+      toast({
+        title: 'Save Failed',
+        description: error.message || 'Unable to save this land right now.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -310,7 +345,7 @@ const LandForm = ({ land, onClose, isEditing }) => {
 
         <Divider />
 
-        {/* Status Section - FIXED: Removed nested Text components */}
+        {/* Status Section */}
         <Box w="100%" p={3} bg="gray.50" borderRadius="md">
           <FormLabel fontSize="sm" fontWeight="bold">Status</FormLabel>
           <SimpleGrid columns={2} spacing={4}>
@@ -340,7 +375,7 @@ const LandForm = ({ land, onClose, isEditing }) => {
           </SimpleGrid>
         </Box>
 
-        {/* Offer Details - Show only if offer of the day is checked */}
+        {/* Offer Details */}
         {formData.isOfferOfDay && (
           <SimpleGrid columns={2} spacing={4} w="100%">
             <FormControl>
@@ -404,6 +439,8 @@ const LandForm = ({ land, onClose, isEditing }) => {
             size="md"
             flex={1}
             borderRadius="full"
+            isLoading={isSubmitting}
+            loadingText={isEditing ? 'Updating...' : 'Saving...'}
           >
             {isEditing ? 'Update Land' : 'Add Land'}
           </Button>

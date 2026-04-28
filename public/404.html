@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Zalsee Estates</title>
     <script>
-      const path = location.pathname.replace('/zalseefestatesmbarara', '');
+      const path = location.pathname;
       if (path !== '/' && !path.includes('.')) {
         sessionStorage.setItem('redirect', path);
-        location.replace('/zalseefestatesmbarara/');
+        location.replace('/');
       }
     </script>
   </head>
@@ -16,7 +16,7 @@
       const redirect = sessionStorage.getItem('redirect');
       if (redirect) {
         sessionStorage.removeItem('redirect');
-        window.history.replaceState(null, null, '/zalseefestatesmbarara' + redirect);
+        window.history.replaceState(null, null, redirect);
       }
     </script>
   </body>

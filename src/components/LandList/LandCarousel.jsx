@@ -9,10 +9,12 @@ import {
   Image,
   Button,
   Badge,
+  Icon,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
-import { BiMap, BiRuler, BiLandscape } from 'react-icons/bi';
+import { BiMap, BiRuler, BiLandscape, BiHeart } from 'react-icons/bi';
+import { FaStar } from 'react-icons/fa';
 
 const LandCarousel = ({ lands }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,18 +23,17 @@ const LandCarousel = ({ lands }) => {
   const carouselRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // Format price safely
   const formatPrice = (price) => {
     return price ? price.toLocaleString() : '0';
   };
 
-  // Number of items to show based on screen size
   const getItemsPerView = () => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth >= 1024) return 3; // desktop
-      if (window.innerWidth >= 768) return 2;  // tablet
+      if (window.innerWidth >= 1280) return 4;
+      if (window.innerWidth >= 1024) return 3;
+      if (window.innerWidth >= 768) return 2;
     }
-    return 1; // mobile
+    return 1;
   };
 
   const [itemsPerView, setItemsPerView] = useState(getItemsPerView());
@@ -47,12 +48,11 @@ const LandCarousel = ({ lands }) => {
 
   const maxIndex = Math.max(0, lands.length - itemsPerView);
 
-  // Auto-play functionality
   useEffect(() => {
     if (!isHovered && lands.length > itemsPerView) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-      }, 3000);
+      }, 4000);
     }
     return () => {
       if (intervalRef.current) {
@@ -69,20 +69,6 @@ const LandCarousel = ({ lands }) => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    setShowControls(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setShowControls(false);
-  };
-
-  const handleMouseMove = () => {
-    setShowControls(true);
-  };
-
   const visibleLands = lands.slice(currentIndex, currentIndex + itemsPerView);
   if (visibleLands.length < itemsPerView) {
     const remaining = itemsPerView - visibleLands.length;
@@ -93,15 +79,20 @@ const LandCarousel = ({ lands }) => {
     <Box
       position="relative"
       w="100%"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        setShowControls(true);
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setShowControls(false);
+      }}
       px={{ base: 0, md: 8 }}
       py={4}
     >
       {/* Navigation Buttons */}
       <IconButton
-        icon={<ChevronLeftIcon boxSize={8} />}
+        icon={<ChevronLeftIcon boxSize={6} />}
         position="absolute"
         left={{ base: 0, md: 2 }}
         top="50%"
@@ -112,14 +103,14 @@ const LandCarousel = ({ lands }) => {
         transition="opacity 0.3s"
         colorScheme="green"
         borderRadius="full"
-        size="lg"
+        size="md"
         boxShadow="lg"
         _hover={{ transform: 'translateY(-50%) scale(1.1)' }}
         aria-label="Previous properties"
       />
 
       <IconButton
-        icon={<ChevronRightIcon boxSize={8} />}
+        icon={<ChevronRightIcon boxSize={6} />}
         position="absolute"
         right={{ base: 0, md: 2 }}
         top="50%"
@@ -130,18 +121,14 @@ const LandCarousel = ({ lands }) => {
         transition="opacity 0.3s"
         colorScheme="green"
         borderRadius="full"
-        size="lg"
+        size="md"
         boxShadow="lg"
         _hover={{ transform: 'translateY(-50%) scale(1.1)' }}
         aria-label="Next properties"
       />
 
       {/* Carousel Container */}
-      <Box
-        ref={carouselRef}
-        overflow="hidden"
-        borderRadius="xl"
-      >
+      <Box ref={carouselRef} overflow="hidden" borderRadius="xl">
         <HStack
           spacing={4}
           transition="transform 0.5s ease-in-out"
@@ -159,19 +146,19 @@ const LandCarousel = ({ lands }) => {
                   bg="white"
                   borderRadius="xl"
                   overflow="hidden"
-                  boxShadow="md"
+                  boxShadow="lg"
                   transition="all 0.3s"
                   _hover={{
                     transform: 'translateY(-8px)',
-                    boxShadow: 'xl',
+                    boxShadow: '2xl',
                   }}
                   position="relative"
                   role="group"
                 >
-                  {/* Image with Status Badges */}
+                  {/* Image Container */}
                   <Box position="relative" h="200px" overflow="hidden">
                     {/* Status Badges */}
-                    <HStack position="absolute" top={2} left={2} zIndex={2} spacing={1}>
+                    <HStack position="absolute" top={3} left={3} zIndex={2} spacing={1}>
                       {land.isSold && (
                         <Badge colorScheme="red" variant="solid" fontSize="xs" px={2} py={1}>
                           SOLD
@@ -184,6 +171,21 @@ const LandCarousel = ({ lands }) => {
                       )}
                     </HStack>
 
+                    {/* Favorite Icon */}
+                    <Icon
+                      as={BiHeart}
+                      position="absolute"
+                      top={3}
+                      right={3}
+                      color="white"
+                      boxSize={5}
+                      zIndex={2}
+                      opacity={0.9}
+                      cursor="pointer"
+                      _hover={{ color: 'red.500', transform: 'scale(1.1)' }}
+                    />
+
+                    {/* Image */}
                     <Image
                       src={land.imageLg}
                       alt={land.name}
@@ -192,88 +194,67 @@ const LandCarousel = ({ lands }) => {
                       objectFit="cover"
                       transition="transform 0.5s"
                       _groupHover={{ transform: 'scale(1.1)' }}
-                      opacity={land.isSold ? 0.7 : 1}
                     />
-                    
-                    {land.isSold && (
-                      <Box
-                        position="absolute"
-                        top="50%"
-                        left="50%"
-                        transform="translate(-50%, -50%) rotate(-15deg)"
-                        bg="red.500"
-                        color="white"
-                        fontWeight="bold"
-                        fontSize="lg"
-                        px={3}
-                        py={1}
-                        borderRadius="md"
-                      >
-                        SOLD
-                      </Box>
-                    )}
                   </Box>
 
                   {/* Content */}
-                  <VStack p={4} align="start" spacing={2}>
-                    <Heading size="sm" noOfLines={1}>
+                  <VStack p={3} align="start" spacing={1}>
+                    <Heading size="sm" noOfLines={1} color="gray.800">
                       {land.name}
                     </Heading>
 
                     <HStack color="gray.600" fontSize="xs">
-                      <Box as={BiMap} />
+                      <Icon as={BiMap} />
                       <Text noOfLines={1}>{land.location}</Text>
                     </HStack>
 
-                    <HStack spacing={3} fontSize="xs" color="gray.500">
-                      <HStack>
-                        <Box as={BiRuler} />
+                    {/* Rating */}
+                    <HStack spacing={1}>
+                      {[1,2,3,4,5].map((star) => (
+                        <Icon key={star} as={FaStar} color={star <= 4 ? "yellow.400" : "gray.300"} boxSize={2} />
+                      ))}
+                    </HStack>
+
+                    {/* Features */}
+                    <HStack spacing={2} fontSize="xs" color="gray.500">
+                      <HStack spacing={1}>
+                        <Icon as={BiRuler} />
                         <Text>{land.size}</Text>
                       </HStack>
                       <Text>•</Text>
-                      <HStack>
-                        <Box as={BiLandscape} />
-                        <Text>{land.district}</Text>
+                      <HStack spacing={1}>
+                        <Icon as={BiLandscape} />
+                        <Text>{land.landUse}</Text>
                       </HStack>
                     </HStack>
 
-                    {/* Price with Offer Handling */}
+                    {/* Price */}
                     {land.isOfferOfDay && land.offerPrice ? (
-                      <Box mt={1}>
-                        <HStack spacing={2}>
+                      <Box>
+                        <HStack spacing={1}>
                           <Text fontWeight="bold" fontSize="md" color="orange.500">
                             UGX {formatPrice(land.offerPrice)}
                           </Text>
-                          <Text fontSize="sm" color="gray.400" textDecoration="line-through">
+                          <Text fontSize="xs" color="gray.400" textDecoration="line-through">
                             UGX {formatPrice(land.price)}
                           </Text>
                         </HStack>
-                        {land.offerEndDate && (
-                          <Text fontSize="xs" color="orange.500">
-                            Offer ends: {new Date(land.offerEndDate).toLocaleDateString()}
-                          </Text>
-                        )}
                       </Box>
                     ) : (
-                      <Text fontWeight="bold" fontSize="md" color={land.isSold ? 'gray.500' : 'green.600'} mt={1}>
+                      <Text fontWeight="bold" fontSize="md" color={land.isSold ? 'gray.400' : 'green.600'}>
                         UGX {formatPrice(land.price)}
                       </Text>
                     )}
 
-                    {/* Quick Action */}
+                    {/* Quick View Button */}
                     <Button
                       size="xs"
                       colorScheme="green"
-                      variant="outline"
                       w="full"
                       mt={2}
-                      _groupHover={{
-                        bg: 'green.500',
-                        color: 'white',
-                      }}
-                      isDisabled={land.isSold}
+                      _groupHover={{ bg: 'green.600' }}
                     >
-                      {land.isSold ? 'Sold Out' : 'View Details'}
+                      View Details
                     </Button>
                   </VStack>
                 </Box>
@@ -288,14 +269,14 @@ const LandCarousel = ({ lands }) => {
         {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <Box
             key={index}
-            w={index === currentIndex ? '24px' : '8px'}
-            h="8px"
+            w={index === currentIndex ? '20px' : '6px'}
+            h="6px"
             borderRadius="full"
             bg={index === currentIndex ? 'green.500' : 'green.200'}
             cursor="pointer"
             onClick={() => setCurrentIndex(index)}
             transition="all 0.3s"
-            _hover={{ bg: 'green.400' }}
+            _hover={{ bg: 'green.400', transform: 'scale(1.2)' }}
           />
         ))}
       </HStack>

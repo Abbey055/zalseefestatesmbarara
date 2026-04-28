@@ -2,8 +2,8 @@ import { Select } from "@chakra-ui/react";
 import { useContext } from "react";
 import { LandContext } from "../../context/LandContext";
 
-const PriceFilter = () => {
-  const { setPrice } = useContext(LandContext);
+const PriceFilter = (props) => {
+  const { price, setPrice } = useContext(LandContext);
 
   const priceRanges = [
     { value: "0 - 20000000", label: "Under 20 Million" },
@@ -19,7 +19,7 @@ const PriceFilter = () => {
   };
 
   return (
-    <Select placeholder="Select Price Range" onChange={priceHandler}>
+    <Select placeholder="Select Price Range" value={price} onChange={priceHandler} {...props}>
       {priceRanges.map((range, index) =>
           <option key={index} value={range.value}>{range.label}</option>
         )

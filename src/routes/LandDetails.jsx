@@ -1,12 +1,7 @@
-import { Container } from '@chakra-ui/react';
 import LandDetails from '../components/LandDetails/LandDetails';
 
 const LandDetailsPage = () => {
-  return (
-    <Container maxW='container.lg' p='0'>
-      <LandDetails />
-    </Container>
-  )
-}
+  return <LandDetails />;
+};
 
 export default LandDetailsPage;

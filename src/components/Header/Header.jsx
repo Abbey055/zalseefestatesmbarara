@@ -1,289 +1,124 @@
-import { 
-  Flex, 
-  Heading, 
-  Button, 
-  HStack, 
-  chakra, 
-  ButtonGroup, 
-  useBreakpointValue, 
+import {
   Box,
+  Button,
+  Flex,
+  HStack,
+  chakra,
+  useBreakpointValue,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import NavMobile from './NavMobile';
-import { useState } from 'react';
-import { keyframes } from '@emotion/react';
+import { Link, useLocation } from 'react-router-dom';
 
-// Animation for the click effect
-const fadeWhite = keyframes`
-  0% { opacity: 0; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.1); background-color: rgba(255, 255, 255, 0.8); }
-  100% { opacity: 0; transform: scale(1.5); background-color: rgba(255, 255, 255, 0); }
-`;
+import NavMobile from './NavMobile';
+import ColorModeToggle from './ColorModeToggle';
+import BrandLogo from './BrandLogo';
+
+const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Land for Sale', to: '/land-for-sale' },
+  { label: 'Gallery', to: '/gallery' },
+  { label: 'Location', to: '/location' },
+  { label: 'Payment', to: '/payment-methods' },
+  { label: 'About', to: '/about' },
+];
 
 const Header = () => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
-  const [clickedItem, setClickedItem] = useState(null);
+  const isDesktop = useBreakpointValue({ base: false, xl: true });
+  const location = useLocation();
 
-  const handleNavClick = (item) => {
-    setClickedItem(item);
-    setTimeout(() => setClickedItem(null), 500);
-  };
+  const shellBg = useColorModeValue('rgba(11, 21, 28, 0.94)', 'rgba(5, 13, 17, 0.96)');
+  const borderColor = useColorModeValue('rgba(255,255,255,0.10)', 'rgba(255,255,255,0.08)');
+  const navColor = useColorModeValue('rgba(255,255,255,0.84)', 'rgba(237,245,243,0.84)');
+  const activeColor = useColorModeValue('#f5c27a', '#f5c27a');
+  const hoverColor = useColorModeValue('white', 'white');
+  const subtleShell = useColorModeValue('rgba(255,255,255,0.06)', 'rgba(255,255,255,0.04)');
 
   return (
-    <chakra.header id="header" borderBottom='1px solid rgb(0,0,0,0.3)'>
-      <Flex w='100%' py='5' align='center' justify='space-between'>
-        <Link to='/'>
-          <Heading 
-            fontSize={{ base: 'xl', sm: '2xl', md: '3xl' }} 
-            color='green.700'
-            bgGradient="linear(to-r, green.700, green.500)"
-            bgClip="text"
-            _hover={{ transform: 'scale(1.05)' }}
-            transition="all 0.2s"
-          >
-            Zalseef Estates
-          </Heading>
+    <chakra.header
+      id="header"
+      position="sticky"
+      top="0"
+      zIndex="1200"
+      bg={shellBg}
+      borderBottom="1px solid"
+      borderColor={borderColor}
+      backdropFilter="blur(18px)"
+      boxShadow="0 20px 48px rgba(0, 0, 0, 0.24)"
+    >
+      <Flex
+        w="100%"
+        maxW="1720px"
+        mx="auto"
+        py={{ base: 3.5, md: 4 }}
+        px={{ base: 4, md: 6, xl: 8 }}
+        align="center"
+        justify="space-between"
+        gap={5}
+      >
+        <Link to="/">
+          <Box transition="transform 0.2s ease" _hover={{ transform: 'translateY(-1px)' }}>
+            <BrandLogo light />
+          </Box>
         </Link>
-        
+
         {isDesktop ? (
-          <>
-            <ButtonGroup as='nav' variant='link' spacing={{ md: '3', lg: '5' }}>
-              <Box position="relative" display="inline-block">
-                <Link to="/" onClick={() => handleNavClick('home')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }} 
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
-                  >
-                    Home
-                  </Button>
-                </Link>
-                {clickedItem === 'home' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
+          <HStack spacing={4} flex="1" justify="flex-end">
+            <HStack
+              as="nav"
+              spacing={{ base: 1, xl: 2 }}
+              px={2}
+              py={1.5}
+              bg={subtleShell}
+              border="1px solid"
+              borderColor={borderColor}
+            >
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.to;
 
-              <Box position="relative" display="inline-block">
-                <Link to="/land-for-sale" onClick={() => handleNavClick('land')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }}
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
+                return (
+                  <Button
+                    key={item.to}
+                    as={Link}
+                    to={item.to}
+                    variant="ghost"
+                    px={{ base: 3, xl: 4 }}
+                    h="44px"
+                    color={isActive ? activeColor : navColor}
+                    _hover={{ color: hoverColor, bg: 'rgba(255,255,255,0.06)' }}
+                    _active={{ bg: 'rgba(255,255,255,0.08)' }}
+                    fontSize="sm"
                   >
-                    Land for Sale
+                    {item.label}
                   </Button>
-                </Link>
-                {clickedItem === 'land' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-
-              <Box position="relative" display="inline-block">
-                <Link to="/gallery" onClick={() => handleNavClick('gallery')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }}
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
-                  >
-                    Gallery
-                  </Button>
-                </Link>
-                {clickedItem === 'gallery' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-
-              <Box position="relative" display="inline-block">
-                <Link to="/location" onClick={() => handleNavClick('location')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }}
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
-                  >
-                    Location
-                  </Button>
-                </Link>
-                {clickedItem === 'location' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-
-              <Box position="relative" display="inline-block">
-                <Link to="/payment-methods" onClick={() => handleNavClick('payment')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }}
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
-                  >
-                    Payment
-                  </Button>
-                </Link>
-                {clickedItem === 'payment' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-
-              <Box position="relative" display="inline-block">
-                <Link to="/about" onClick={() => handleNavClick('about')}>
-                  <Button 
-                    fontSize={{ md: '14px', lg: '16px' }}
-                    fontWeight="medium"
-                    _hover={{ color: 'green.600', transform: 'translateY(-2px)' }}
-                    transition="all 0.2s"
-                  >
-                    About Us
-                  </Button>
-                </Link>
-                {clickedItem === 'about' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="full"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-            </ButtonGroup>
-
-            <HStack spacing={{ md: '2', lg: '4' }}>
-              <Box position="relative" display="inline-block">
-                <Link to="/contact" onClick={() => handleNavClick('contact')}>
-                  <Button 
-                    size={{ md: 'xs', lg: 'sm' }} 
-                    variant='solid'
-                    colorScheme="green"
-                    _hover={{
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 5px 15px rgba(56,161,105,0.3)'
-                    }}
-                    transition="all 0.2s"
-                  >
-                    Contact Us
-                  </Button>
-                </Link>
-                {clickedItem === 'contact' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="md"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
-
-              <Box position="relative" display="inline-block">
-                <Link to="/list-land" onClick={() => handleNavClick('list')}>
-                  <Button 
-                    size={{ md: 'xs', lg: 'sm' }} 
-                    variant='outline'
-                    colorScheme="green"
-                    _hover={{
-                      bg: 'green.50',
-                      transform: 'translateY(-2px)',
-                      borderColor: 'green.600'
-                    }}
-                    transition="all 0.2s"
-                  >
-                    List Land
-                  </Button>
-                </Link>
-                {clickedItem === 'list' && (
-                  <Box
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                    w="100%"
-                    h="100%"
-                    borderRadius="md"
-                    bg="white"
-                    animation={`${fadeWhite} 0.5s ease-out forwards`}
-                    pointerEvents="none"
-                    zIndex={10}
-                  />
-                )}
-              </Box>
+                );
+              })}
             </HStack>
-          </>
+
+            <ColorModeToggle compact />
+
+            <Button
+              as={Link}
+              to="/contact"
+              bg="#2f9f79"
+              color="white"
+              px={6}
+              _hover={{ bg: '#257b5f', transform: 'translateY(-1px)' }}
+            >
+              Contact
+            </Button>
+
+            <Button
+              as={Link}
+              to="/list-land"
+              variant="outline"
+              borderColor="rgba(255,255,255,0.18)"
+              color="white"
+              px={5}
+              _hover={{ bg: 'rgba(255,255,255,0.06)' }}
+            >
+              List Land
+            </Button>
+          </HStack>
         ) : (
           <NavMobile />
         )}
