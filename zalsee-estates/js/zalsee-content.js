@@ -173,9 +173,6 @@
   }
 
   function updateLinks() {
-    document.querySelectorAll('a[href="index.html"]').forEach(function (link) {
-      link.setAttribute('href', './');
-    });
     document.querySelectorAll('a[href="#"]').forEach(function (link) {
       var label = (link.textContent || '').toLowerCase();
       if (label.indexOf('contact') !== -1 || label.indexOf('get in touch') !== -1) link.href = 'contact.html';
@@ -187,9 +184,6 @@
   }
 
   function init() {
-    if (/^https?:$/.test(window.location.protocol) && /\/index\.html$/.test(window.location.pathname)) {
-      window.history.replaceState({}, document.title, window.location.pathname.replace(/index\.html$/, ''));
-    }
     updateText();
     updateImages();
     updateLinks();
