@@ -3439,11 +3439,3 @@ body,
 body *:not([class*="fa"]):not([class*="ion-"]):not([class*="flaticon"]) {
   font-family: "Comic Neue", "Comic Sans MS", "Segoe Print", Arial, sans-serif !important;
 }
-
-/* Use a clean, standard font on phones for better readability. */
-@media (max-width: 767.98px) {
-  body,
-  body *:not([class*="fa"]):not([class*="ion-"]):not([class*="flaticon"]) {
-    font-family: Arial, Helvetica, sans-serif !important;
-  }
-}
