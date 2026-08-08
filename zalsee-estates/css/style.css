@@ -3372,7 +3372,7 @@ body.homepage section.ftco-agent > .container-xl {
   border: 1px solid #e3d9b5;
   border-radius: 2px 8px 8px 2px;
   box-shadow: 4px 5px 0 rgba(0, 0, 0, .08);
-  transform: rotate(-.5deg);
+  transform: none;
 }
 .notebook-quote::before, .notebook-testimonials .testimony-wrap::before {
   content: '';
