@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
 /*!
  * Bootstrap v5.0.0-alpha3 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -3394,14 +3396,14 @@ body.homepage section.ftco-agent > .container-xl {
 .notebook-quote blockquote {
   margin: 0;
   color: #263238;
-  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-family: "Comic Neue", "Comic Sans MS", "Segoe Print", Arial, sans-serif;
   font-size: 20px;
   line-height: 1.6;
 }
 .notebook-quote .note-signoff {
   margin: 16px 0 0;
   color: #5ea51d;
-  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-family: "Comic Neue", "Comic Sans MS", "Segoe Print", Arial, sans-serif;
   font-weight: 700;
   text-align: right;
 }
@@ -3418,7 +3420,7 @@ body.homepage section.ftco-agent > .container-xl {
 .notebook-testimonials .testimony-wrap::before { left: 22px; }
 .notebook-testimonials .testimony-wrap .msg,
 .notebook-testimonials .testimony-wrap .name {
-  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-family: "Comic Neue", "Comic Sans MS", "Segoe Print", Arial, sans-serif;
 }
 .notebook-testimonials .testimony-wrap .msg { color: #263238; font-size: 16px; line-height: 1.7; }
 @media (max-width: 767.98px) {
@@ -3435,5 +3437,5 @@ body.homepage section.ftco-agent > .container-xl {
    preserving the icon fonts used by the interface. */
 body,
 body *:not([class*="fa"]):not([class*="ion-"]):not([class*="flaticon"]) {
-  font-family: "Comic Sans MS", "Segoe Print", cursive !important;
+  font-family: "Comic Neue", "Comic Sans MS", "Segoe Print", Arial, sans-serif !important;
 }
