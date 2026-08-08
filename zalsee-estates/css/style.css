@@ -1515,6 +1515,23 @@ body {
   font-weight: 400;
   color: #999999; }
 
+/* Keep every page flush with the viewport instead of leaving browser-sized
+   gutters around the site. The section content still keeps its own padding. */
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.container-xl,
+.container,
+.container-fluid {
+  width: 100%;
+  max-width: 100%;
+}
+
 a, button {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
@@ -2046,6 +2063,57 @@ textarea.form-control {
     color: #ffffff !important;
 }
 
+/* Homepage services: the open, two-column layout used on the services page. */
+.homepage-services {
+  background: #fff;
+  padding-top: 4em;
+  padding-bottom: 4em;
+}
+.homepage-services .heading-section { margin-bottom: 2.5rem !important; }
+.homepage-services .heading-section .subheading { color: #000; }
+.homepage-services .heading-section h2 {
+  color: #000;
+  text-align: center;
+}
+.service-item {
+  min-height: 220px;
+  padding: 0 55px 35px 0;
+  text-align: center;
+}
+.service-item:nth-child(even) { padding-left: 35px; padding-right: 20px; }
+.service-icon {
+  display: block;
+  margin-bottom: 16px;
+  color: #000;
+  font-size: 34px;
+}
+.service-item h3 {
+  margin-bottom: 12px;
+  color: #000;
+  font-size: 17px;
+  font-weight: 800;
+}
+.service-item p {
+  max-width: 390px;
+  margin: 0 auto 14px;
+  color: #000;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.service-item a {
+  display: inline-block;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #000;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+}
+.service-item a:hover { color: #000; }
+@media (max-width: 767.98px) {
+  .service-item,
+  .service-item:nth-child(even) { min-height: 0; padding: 0 15px 35px; }
+}
+
 /* ============================================================
    PLACES LIST
    ============================================================ */
@@ -2378,7 +2446,7 @@ textarea.form-control {
     .ftco-section {
       padding: 6em 0; } }
 
-/* Keep the homepage content on the light Oakberry-style canvas. The navy
+/* Keep the homepage content on the light site canvas. The navy
    treatment is reserved for the hero, agent band, and footer. */
 .homepage .ftco-section {
   background: #fff !important;
@@ -2434,10 +2502,21 @@ textarea.form-control {
 }
 
 .property-description {
-  margin: -12px 0 14px;
+  margin: 4px 0 14px;
   color: #777;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+/* Give every plot card a clear reading order: title, description, then
+   location/details. The old negative margin pulled descriptions into titles. */
+.property-wrap .text > h3 {
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.property-wrap .text > h3 + .property-description {
+  margin-top: 0;
 }
 
 .homepage .property-description {
@@ -2472,7 +2551,7 @@ textarea.form-control {
   background-position: center 12%;
 }
 
-/* Restore the original compact Oakberry featured-card proportions. */
+/* Restore the original compact featured-card proportions. */
 .homepage .property-wrap,
 .homepage .property-wrap .text {
   height: auto;
@@ -2515,6 +2594,16 @@ textarea.form-control {
   display: block !important;
   width: 100%;
   clear: both;
+}
+
+.homepage .ftco-section.bg-light .property-wrap .text h3 {
+  min-height: 2.7em;
+  margin-bottom: .35rem;
+}
+
+.homepage .ftco-section.bg-light .property-wrap .location {
+  display: block;
+  min-height: 2.2em;
 }
 
 .ftco-no-pt {
@@ -2929,8 +3018,15 @@ textarea.form-control {
     font-size: 13px;
     font-weight: 600;
     margin-right: 10px; }
-    .wrapper .social-media p a:hover {
+.wrapper .social-media p a:hover {
       color: #000000; }
+.wrapper .social-media p a .tiktok-logo {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  fill: currentColor;
+}
 
 .contact-wrap {
   background: #fff; }
@@ -2971,10 +3067,217 @@ textarea.form-control {
   padding: 0; }
 
 #map {
-  width: 100%; }
+  width: 100%;
+  min-height: 420px; }
+  #map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    border: 0; }
   @media (max-width: 767.98px) {
-    #map {
-      height: 300px; } }
+    #map,
+    #map iframe {
+      height: 300px;
+      min-height: 300px; } }
+
+/* ============================================================
+   PAYMENT DETAILS
+   ============================================================ */
+
+.payment-section {
+  padding-top: 1.5em;
+  padding-bottom: 2em;
+  background: #f7f8f4;
+}
+.payment-intro {
+  max-width: 720px;
+  margin: 0 auto 35px;
+  text-align: center;
+}
+.payment-intro .subheading { color: #5ea51d; }
+.payment-card {
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e8ece5;
+  box-shadow: 0 8px 24px rgba(5, 13, 33, .08);
+  text-align: center;
+}
+.payment-card-head {
+  padding: 26px 18px 20px;
+  color: #fff;
+}
+.payment-card-head.bank { background: #063baf; }
+.payment-card-head.equity { background: #fff; color: #d9470b; border-bottom: 1px solid #eee; }
+.payment-card-head.gtco { background: #ff4b18; }
+.payment-card-head.airtel { background: #e60012; }
+.payment-card-head.mtn { background: #ffcb05; color: #111; }
+.payment-number {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: #0b6b2b;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+.payment-card-head h3 { margin: 0; font-size: 22px; font-weight: 800; }
+.payment-icon { display: block; margin-bottom: 12px; font-size: 34px; }
+.payment-card-body { padding: 20px 18px 24px; }
+.payment-card-body .payment-label { margin: 0 0 5px; color: #5f685d; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.payment-account {
+  display: block;
+  padding: 13px 10px;
+  border-radius: 8px;
+  background: #08732e;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.payment-card:nth-child(2) .payment-account,
+.payment-card:nth-child(4) .payment-account { background: #f36b0a; }
+.payment-name { margin: 16px 0 0; color: #16213e; font-size: 15px; font-weight: 700; }
+.payment-note {
+  margin-top: 34px;
+  padding: 18px 24px;
+  border: 1px solid #5ea51d;
+  border-radius: 10px;
+  background: #fff;
+  color: #16213e;
+  text-align: center;
+  font-weight: 700;
+}
+.payment-note .fa { margin-right: 8px; color: #5ea51d; }
+.payment-socials { margin-top: 30px; text-align: center; }
+.payment-socials a { margin: 0 10px; font-size: 22px; }
+.payment-socials .instagram { color: #e4405f; }
+.payment-socials .tiktok { color: #111; }
+.payment-socials .youtube { color: #ff0000; }
+.payment-selector {
+  display: grid;
+  grid-template-columns: minmax(230px, .85fr) minmax(320px, 1.15fr);
+  gap: 34px;
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.payment-methods h3 { margin: 0 0 8px; color: #2356d8; font-size: 25px; line-height: 1.05; }
+.payment-help { margin-bottom: 18px; color: #69739b; font-size: 12px; line-height: 1.35; }
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  margin-bottom: 8px;
+  padding: 7px 10px;
+  border: 1px solid #aebce5;
+  border-radius: 10px;
+  color: #3152a0;
+  background: rgba(255,255,255,.5);
+  font-size: 12px;
+  font-weight: 700;
+}
+.payment-method.active { background: #fff; box-shadow: 0 4px 10px rgba(48, 82, 177, .12); }
+.payment-method > i { margin-left: auto; color: #9aa9d1; }
+.payment-method-icon { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 12px; font-style: normal; font-weight: 900; }
+.payment-method-icon.bank { background: #174fc5; }
+.payment-method-icon.equity { background: #e5501a; }
+.payment-method-icon.gtco { background: #ff4b18; }
+.payment-method-icon.airtel { background: #df0915; }
+.payment-method-icon.mtn { background: #ffbd00; color: #111; }
+.payment-preview {
+  min-height: 0;
+  padding: 0 0 0 20px;
+  color: #16213e;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-left: 1px solid #d9dfef;
+}
+.payment-preview-top { display: flex; justify-content: space-between; color: #3152a0; font-size: 13px; }
+.payment-preview-top .fa { font-size: 22px; }
+.payment-preview-title { margin: 28px 0 15px; color: #2356d8; font-size: 21px; font-weight: 800; }
+.payment-preview-line { display: flex; justify-content: space-between; gap: 15px; padding: 9px 0; border-bottom: 1px solid #d9dfef; color: #536287; font-size: 12px; }
+.payment-preview-line strong { color: #16213e; font-size: 13px; text-align: right; }
+.payment-preview-footer { margin-top: 22px; color: #536287; font-size: 12px; }
+.payment-preview-footer strong { color: #16213e; }
+@media (max-width: 767.98px) {
+  .payment-selector { grid-template-columns: 1fr; }
+  .payment-preview { padding: 24px 0 0; border-top: 1px solid #d9dfef; border-left: 0; }
+  .payment-card { margin-bottom: 20px; }
+}
+
+/* Use the social channels shown in the brand payment artwork. */
+.ftco-footer-social .social-instagram { background: #e4405f; }
+.ftco-footer-social .social-tiktok { background: #111; }
+.ftco-footer-social .social-youtube { background: #ff0000; }
+.top-wrap .fa-instagram,
+.top-wrap .fa-music,
+.top-wrap .fa-youtube-play { color: #5ea51d; }
+
+/* Property details */
+.property-detail-hero { background-image: url('../images/logo/land2.jpg'); }
+.property-detail-link { cursor: pointer; }
+.property-detail-section { padding: 4em 0; background: #f7f8f4; }
+.property-detail-card {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(5, 13, 33, .1);
+}
+.property-detail-image {
+  min-height: 430px;
+  background-position: center;
+  background-size: cover;
+}
+.property-detail-main { padding: 42px 48px; }
+.property-detail-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 22px; }
+.detail-status { padding: 5px 12px; background: #5ea51d; color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.detail-price { color: #5ea51d; font-size: 25px; font-weight: 800; }
+.property-detail-main h2 { margin-bottom: 10px; color: #111; font-size: 34px; }
+.detail-location { color: #5ea51d; font-size: 15px; font-weight: 700; }
+.detail-location .fa { margin-right: 6px; }
+.detail-description { color: #66737c; font-size: 15px; line-height: 1.8; }
+.detail-facts { display: flex; gap: 15px; margin: 28px 0; padding: 18px 0; border-top: 1px solid #edf0ea; border-bottom: 1px solid #edf0ea; }
+.detail-facts > div { flex: 1; text-align: center; }
+.detail-facts .fa { display: block; margin-bottom: 8px; color: #5ea51d; font-size: 20px; }
+.detail-facts strong, .detail-facts small { display: block; }
+.detail-facts strong { color: #222; font-size: 13px; }
+.detail-facts small { margin-top: 4px; color: #89949b; font-size: 11px; text-transform: uppercase; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.detail-actions .btn-outline-primary { border-color: #5ea51d; color: #5ea51d; }
+.detail-actions .btn-outline-primary:hover { background: #5ea51d; color: #fff; }
+.property-detail-lower { padding-top: 50px; }
+.detail-info-block, .detail-ceo { height: 100%; padding: 30px; background: #fff; }
+.detail-info-block h3, .detail-ceo h3 { margin: 6px 0 20px; color: #111; font-size: 24px; }
+.detail-info-block .subheading, .detail-ceo .subheading { color: #5ea51d; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.detail-info-block ul { padding: 0; margin: 0; list-style: none; }
+.detail-info-block li { padding: 10px 0; border-bottom: 1px solid #edf0ea; color: #5d6b72; font-size: 14px; }
+.detail-info-block li .fa { margin-right: 8px; color: #5ea51d; }
+.detail-ceo { display: flex; align-items: center; gap: 20px; }
+.detail-ceo img { width: 100px; height: 100px; object-fit: cover; object-position: center top; border-radius: 50%; }
+.detail-ceo h3 { margin: 8px 0 3px; font-size: 20px; }
+.detail-ceo p { margin: 0 0 10px; color: #6e7b81; font-size: 13px; }
+.detail-ceo a { color: #5ea51d; font-size: 13px; font-weight: 700; }
+@media (max-width: 767.98px) {
+  .property-detail-card { grid-template-columns: 1fr; }
+  .property-detail-image { min-height: 280px; }
+  .property-detail-main { padding: 30px 22px; }
+  .property-detail-main h2 { font-size: 28px; }
+  .detail-price { font-size: 20px; }
+  .detail-ceo { margin-top: 24px; }
+}
 
 /* ============================================================
    PAGINATION
@@ -2983,9 +3286,9 @@ textarea.form-control {
 .block-27 ul {
   padding: 0;
   margin: 0; }
-  .block-27 ul li {
+.block-27 ul li {
     display: inline-block;
-    margin-bottom: 4px;
+    margin: 0 3px 4px;
     font-weight: 400; }
     .block-27 ul li a, .block-27 ul li span {
       color: #000000;
@@ -2997,12 +3300,14 @@ textarea.form-control {
       border-radius: 4px;
       border: 1px solid #e6e6e6;
       background: #fff; }
+.block-27 ul li:first-child,
+.block-27 ul li:last-child { margin-left: 0; margin-right: 0; }
 .block-27 ul li.active a, .block-27 ul li.active span, .block-27 ul li:hover a, .block-27 ul li:hover span {
       background: #5ea51d;
       color: #fff;
       border: 1px solid transparent; }
 
-/* Final homepage team-band override: Oakberry's 65% navy panel. */
+/* Final homepage team-band override: the 65% navy panel. */
 body.homepage section.ftco-agent {
   background: #fff !important;
   background-color: #fff !important;
@@ -3017,4 +3322,118 @@ body.homepage section.ftco-agent > .overlay {
 body.homepage section.ftco-agent > .container-xl {
   position: relative;
   z-index: 1;
+}
+
+/* Notebook-style leadership note and testimonials. */
+.ceo-quote-section { padding: 3em 0; background: #f7f7f7; }
+.ceo-quote-heading { margin-bottom: 1.5rem; }
+.ceo-quote-heading h2 { margin-bottom: 0 !important; }
+.ceo-quote-section .row { display: flex; flex-wrap: nowrap; }
+.ceo-quote-section .col-lg-5 { flex: 0 0 35%; max-width: 35%; }
+.ceo-quote-section .col-lg-7 { flex: 0 0 65%; max-width: 65%; }
+.ceo-portrait {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  box-shadow: 12px 12px 0 rgba(94, 165, 29, .16);
+}
+.ceo-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.ceo-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, .92);
+  color: #222;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.ceo-caption small { color: #5ea51d; font-weight: 600; }
+.notebook-quote {
+  position: relative;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 42px 44px 34px 62px;
+  color: #263238;
+  background-color: #fffef5;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(82, 151, 194, .22) 32px, transparent 33px);
+  border: 1px solid #e3d9b5;
+  border-radius: 2px 8px 8px 2px;
+  box-shadow: 4px 5px 0 rgba(0, 0, 0, .08);
+  transform: rotate(-.5deg);
+}
+.notebook-quote::before, .notebook-testimonials .testimony-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 2px solid rgba(211, 89, 89, .32);
+}
+.notebook-quote::before { left: 42px; }
+.notebook-quote .note-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #5ea51d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.notebook-quote blockquote {
+  margin: 0;
+  color: #263238;
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: 20px;
+  line-height: 1.6;
+}
+.notebook-quote .note-signoff {
+  margin: 16px 0 0;
+  color: #5ea51d;
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-weight: 700;
+  text-align: right;
+}
+.notebook-testimonials { background: #fffdf3 !important; }
+.notebook-testimonials .testimony-wrap {
+  min-height: 250px;
+  padding: 42px 30px 30px !important;
+  background-color: #fffef5;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(82, 151, 194, .2) 32px, transparent 33px);
+  border: 1px solid #e3d9b5;
+  border-radius: 2px 7px 7px 2px;
+  box-shadow: 3px 5px 0 rgba(0, 0, 0, .07);
+}
+.notebook-testimonials .testimony-wrap::before { left: 22px; }
+.notebook-testimonials .testimony-wrap .msg,
+.notebook-testimonials .testimony-wrap .name {
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+}
+.notebook-testimonials .testimony-wrap .msg { color: #263238; font-size: 16px; line-height: 1.7; }
+@media (max-width: 767.98px) {
+  .ceo-quote-section .row { flex-wrap: wrap; }
+  .ceo-quote-section .col-lg-5,
+  .ceo-quote-section .col-lg-7 { flex: 0 0 100%; max-width: 100%; }
+  .ceo-portrait { width: 260px; height: 260px; }
+  .notebook-quote { padding: 34px 26px 28px 48px; }
+  .notebook-quote::before { left: 30px; }
+  .notebook-quote blockquote { font-size: 17px; }
+}
+
+/* Use the same friendly handwritten style throughout the site while
+   preserving the icon fonts used by the interface. */
+body,
+body *:not([class*="fa"]):not([class*="ion-"]):not([class*="flaticon"]) {
+  font-family: "Comic Sans MS", "Segoe Print", cursive !important;
 }
