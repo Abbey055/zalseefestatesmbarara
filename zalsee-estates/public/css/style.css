@@ -3104,6 +3104,8 @@ textarea.form-control {
 
 /* Keep rotating hero copy visible after AOS has completed its one-time animation. */
 .hero-slider .item [data-aos] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+.hero-slider.hero-fallback .item { display: none; }
+.hero-slider.hero-fallback .item.hero-fallback-active { display: block; }
 
 .payment-section {
   padding-top: 1.5em;

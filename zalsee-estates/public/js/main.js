@@ -11,19 +11,40 @@
 
 		var heroSlider = document.querySelectorAll('.hero-slider');
 
-		if ( heroSlider.length > 0 && typeof tns !== 'undefined' ) {
-			var heroSlider = tns({
-				container: '.hero-slider',
-				items: 1,
-				mode: 'carousel',
-				autoplay: true,
-			  animateIn: 'tns-fadeIn',
-		    animateOut: 'tns-fadeOut',
-				speed: 700,
-				nav: true,
-				controls: false,
-				autoplayButtonOutput: false,
-			});
+		if (heroSlider.length > 0) {
+			var startFallbackHero = function () {
+				var container = heroSlider[0];
+				var items = Array.prototype.slice.call(container.children);
+				if (items.length < 2) return;
+				container.classList.add('hero-fallback');
+				var active = 0;
+				var show = function () {
+					items.forEach(function (item, index) { item.classList.toggle('hero-fallback-active', index === active); });
+				};
+				show();
+				window.setInterval(function () { active = (active + 1) % items.length; show(); }, 5000);
+			};
+
+			if (typeof tns !== 'undefined') {
+				try {
+					tns({
+						container: '.hero-slider',
+						items: 1,
+						mode: 'carousel',
+						autoplay: true,
+						animateIn: 'tns-fadeIn',
+						animateOut: 'tns-fadeOut',
+						speed: 700,
+						nav: true,
+						controls: false,
+						autoplayButtonOutput: false,
+					});
+				} catch (error) {
+					startFallbackHero();
+				}
+			} else {
+				startFallbackHero();
+			}
 		}
 
 
