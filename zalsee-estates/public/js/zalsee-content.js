@@ -333,14 +333,25 @@
     var form = document.getElementById('contactForm');
     if (!form || form.getAttribute('data-bound') === 'true') return;
     form.setAttribute('data-bound', 'true');
+    form.querySelectorAll('input[name], textarea[name]').forEach(function (field) {
+      field.required = true;
+    });
     form.addEventListener('submit', function (event) {
       event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
       var name = (form.querySelector('[name="name"]') || {}).value || '';
       var email = (form.querySelector('[name="email"]') || {}).value || '';
       var subject = (form.querySelector('[name="subject"]') || {}).value || 'Website enquiry';
       var message = (form.querySelector('[name="message"]') || {}).value || '';
-      var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
-      window.location.href = 'mailto:zalseefmhd256@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var body = '*New website enquiry*\n\n' +
+        '*Name:* ' + name + '\n' +
+        '*Email:* ' + email + '\n' +
+        '*Subject:* ' + subject + '\n\n' + message;
+      var whatsappUrl = 'https://wa.me/256708124902?text=' + encodeURIComponent(body);
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     });
   }
 
