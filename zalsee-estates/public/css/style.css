@@ -3102,6 +3102,9 @@ textarea.form-control {
 .map-location-details strong { color:#374151; font-size:13px; }
 @media (max-width:575.98px) { .map-location-heading { align-items:flex-start; flex-direction:column; } .map-open-link { align-self:stretch; text-align:center; } .map-location-details { grid-template-columns:1fr; } }
 
+/* Keep rotating hero copy visible after AOS has completed its one-time animation. */
+.hero-slider .item [data-aos] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+
 .payment-section {
   padding-top: 1.5em;
   padding-bottom: 2em;
