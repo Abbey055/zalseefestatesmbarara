@@ -30,7 +30,7 @@ function normalizeMarkup(markup) {
     image.decoding = 'async';
   });
   document.querySelectorAll('[style*="background-image"]').forEach((element, index) => {
-    if (index < 3) return;
+    if (index < 3 || element.matches('.user-img')) return;
     const style = element.getAttribute('style') || '';
     const match = style.match(/background-image\s*:\s*([^;]+)/i);
     if (!match) return;
