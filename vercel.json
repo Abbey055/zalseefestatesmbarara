@@ -2,7 +2,8 @@
   "installCommand": "npm install --prefix zalsee-estates",
   "buildCommand": "npm --prefix zalsee-estates run build",
   "outputDirectory": "zalsee-estates/dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
