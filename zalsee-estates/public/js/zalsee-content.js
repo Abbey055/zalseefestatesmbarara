@@ -67,6 +67,14 @@
     slides.forEach(function (slide, index) {
       var heading = slide.querySelector('h2');
       var text = slide.querySelector('.text p.mb-5');
+      var copyBlock = slide.querySelector('.text');
+      if (copyBlock) {
+        copyBlock.removeAttribute('data-aos');
+        copyBlock.style.opacity = '1';
+        copyBlock.style.visibility = 'visible';
+        copyBlock.style.transform = 'none';
+        copyBlock.style.display = 'block';
+      }
       if (heading) heading.textContent = copy[index];
       if (text) text.textContent = descriptions[index];
     });
