@@ -65,6 +65,7 @@
       'From your first inquiry to documentation questions, Zalseef Estates helps make land ownership feel more straightforward.'
     ];
     slides.forEach(function (slide, index) {
+      var slideIndex = index % copy.length;
       var heading = slide.querySelector('h2');
       var text = slide.querySelector('.text p.mb-5');
       var copyBlock = slide.querySelector('.text');
@@ -76,14 +77,14 @@
         copyBlock.style.display = 'block';
       }
       if (heading) {
-        heading.textContent = copy[index];
+        heading.textContent = copy[slideIndex];
         heading.style.display = 'block';
         heading.style.visibility = 'visible';
         heading.style.opacity = '1';
         heading.style.color = '#fff';
       }
       if (text) {
-        text.textContent = descriptions[index];
+        text.textContent = descriptions[slideIndex];
         text.style.display = 'block';
         text.style.visibility = 'visible';
         text.style.opacity = '1';
@@ -365,6 +366,12 @@
     }
     form.querySelectorAll('input[name], textarea[name]').forEach(function (field) {
       field.required = true;
+    });
+    var currentPath = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(function (link) {
+      var href = link.getAttribute('href') || '';
+      var linkPath = href.split('?')[0].replace(/\.html$/, '').replace(/\/$/, '') || '/';
+      link.classList.toggle('active', linkPath === currentPath);
     });
     form.addEventListener('submit', function (event) {
       event.preventDefault();

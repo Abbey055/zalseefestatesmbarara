@@ -3106,6 +3106,7 @@ textarea.form-control {
 .hero-slider .item [data-aos] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
 .hero-slider.hero-fallback .item { display: none; }
 .hero-slider.hero-fallback .item.hero-fallback-active { display: block; }
+.ftco-navbar-light .navbar-nav > .nav-item > .nav-link.active { color: #5ea51d !important; }
 
 .payment-section {
   padding-top: 1.5em;
