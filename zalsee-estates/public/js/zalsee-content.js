@@ -371,7 +371,10 @@
     document.querySelectorAll('.navbar-nav .nav-link').forEach(function (link) {
       var href = link.getAttribute('href') || '';
       var linkPath = href.split('?')[0].replace(/\.html$/, '').replace(/\/$/, '') || '/';
-      link.classList.toggle('active', linkPath === currentPath);
+      var label = (link.textContent || '').trim().toLowerCase();
+      var active = linkPath === currentPath || (currentPath === '/' && label === 'home');
+      link.classList.toggle('active', active);
+      link.style.color = active ? '#5ea51d' : '';
     });
     form.addEventListener('submit', function (event) {
       event.preventDefault();
