@@ -319,6 +319,11 @@
   }
 
   function updateLinks() {
+    document.querySelectorAll('a').forEach(function (link) {
+      var label = (link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      if (label.indexOf('list your land') !== -1) link.href = '/contact?request=list-land';
+      else if (label.indexOf('submit a property') !== -1) link.href = '/contact?request=submit-property';
+    });
     document.querySelectorAll('a[href="#"]').forEach(function (link) {
       var label = (link.textContent || '').toLowerCase();
       if (label.indexOf('contact') !== -1 || label.indexOf('get in touch') !== -1) link.href = '/contact';
@@ -333,6 +338,11 @@
     var form = document.getElementById('contactForm');
     if (!form || form.getAttribute('data-bound') === 'true') return;
     form.setAttribute('data-bound', 'true');
+    var request = new URLSearchParams(window.location.search).get('request');
+    var subjectField = form.querySelector('[name="subject"]');
+    if (subjectField && !subjectField.value && request) {
+      subjectField.value = request === 'list-land' ? 'List my land' : 'Submit a property';
+    }
     form.querySelectorAll('input[name], textarea[name]').forEach(function (field) {
       field.required = true;
     });
