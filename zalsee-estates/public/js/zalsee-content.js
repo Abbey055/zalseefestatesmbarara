@@ -75,8 +75,20 @@
         copyBlock.style.transform = 'none';
         copyBlock.style.display = 'block';
       }
-      if (heading) heading.textContent = copy[index];
-      if (text) text.textContent = descriptions[index];
+      if (heading) {
+        heading.textContent = copy[index];
+        heading.style.display = 'block';
+        heading.style.visibility = 'visible';
+        heading.style.opacity = '1';
+        heading.style.color = '#fff';
+      }
+      if (text) {
+        text.textContent = descriptions[index];
+        text.style.display = 'block';
+        text.style.visibility = 'visible';
+        text.style.opacity = '1';
+        text.style.color = 'rgba(255,255,255,.8)';
+      }
     });
     updateProperties();
   }
