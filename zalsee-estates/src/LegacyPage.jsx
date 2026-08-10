@@ -25,7 +25,24 @@ function normalizeMarkup(markup) {
     const style = element.getAttribute('style');
     if (style) element.setAttribute('style', style.replaceAll('url(images/', 'url(/images/'));
   });
-  document.querySelectorAll('img').forEach((image) => { image.loading = 'lazy'; image.decoding = 'async'; });
+  document.querySelectorAll('img').forEach((image, index) => {
+    image.loading = index < 2 ? 'eager' : 'lazy';
+    image.decoding = 'async';
+  });
+  document.querySelectorAll('[style*="background-image"]').forEach((element, index) => {
+    if (index < 3) return;
+    const style = element.getAttribute('style') || '';
+    const match = style.match(/background-image\s*:\s*([^;]+)/i);
+    if (!match) return;
+    element.setAttribute('data-lazy-background', match[1].trim());
+    element.style.backgroundImage = 'none';
+  });
+  document.querySelectorAll('a[target="_blank"]').forEach((link) => {
+    const rel = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+    rel.add('noopener');
+    rel.add('noreferrer');
+    link.setAttribute('rel', [...rel].join(' '));
+  });
   document.querySelectorAll('a[href*=".html"]').forEach((link) => {
     const value = link.getAttribute('href');
     const [path, query = ''] = value.split('?');
@@ -41,6 +58,26 @@ function normalizeMarkup(markup) {
     footer.appendChild(credit);
   }
   return document.body.innerHTML;
+}
+
+function observeLazyBackgrounds() {
+  const elements = [...document.querySelectorAll('[data-lazy-background]')];
+  const load = (element) => {
+    element.style.backgroundImage = element.dataset.lazyBackground;
+    element.removeAttribute('data-lazy-background');
+  };
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(load);
+    return;
+  }
+  const observer = new IntersectionObserver((entries, instance) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      load(entry.target);
+      instance.unobserve(entry.target);
+    });
+  }, { rootMargin: '300px 0px' });
+  elements.forEach((element) => observer.observe(element));
 }
 
 export default function LegacyPage({ source }) {
@@ -59,8 +96,8 @@ export default function LegacyPage({ source }) {
     let cancelled = false;
     (async () => {
       await loadScript('/js/bootstrap.bundle.min.js');
-      await loadScript('/js/tiny-slider.js');
-      await loadScript('/js/glightbox.min.js');
+      if (/hero-slider|carousel-testimony/.test(markup)) await loadScript('/js/tiny-slider.js');
+      if (/glightbox|lightbox/.test(markup)) await loadScript('/js/glightbox.min.js');
       await loadScript('/js/aos.js');
       await loadScript('/js/main.js');
       if (source === 'property-details.html') await loadScript('/js/property-details.js');
@@ -68,6 +105,10 @@ export default function LegacyPage({ source }) {
     })();
     return () => { cancelled = true; };
   }, [markup, source]);
+
+  useEffect(() => {
+    if (markup) observeLazyBackgrounds();
+  }, [markup]);
 
   return <div dangerouslySetInnerHTML={{ __html: markup }} />;
 }

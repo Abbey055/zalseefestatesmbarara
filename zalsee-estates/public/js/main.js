@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	AOS.init({
+	if (typeof AOS !== 'undefined') AOS.init({
 		ease: 'slide',
 		once: true
 	});
@@ -11,7 +11,7 @@
 
 		var heroSlider = document.querySelectorAll('.hero-slider');
 
-		if ( heroSlider.length > 0 ) {
+		if ( heroSlider.length > 0 && typeof tns !== 'undefined' ) {
 			var heroSlider = tns({
 				container: '.hero-slider',
 				items: 1,
@@ -29,7 +29,7 @@
 
 		var carouselSlider = document.querySelectorAll('.carousel-testimony');
 
-		if ( carouselSlider.length > 0 ) {
+		if ( carouselSlider.length > 0 && typeof tns !== 'undefined' ) {
 
 			var testimonySlider = tns({
 				container: '.carousel-testimony',
@@ -128,7 +128,7 @@
 	checkPosition()
 
 
-	const lightbox = GLightbox({
+	if (typeof GLightbox !== 'undefined') GLightbox({
 	  touchNavigation: true,
 	  loop: true,
 	  autoplayVideos: true

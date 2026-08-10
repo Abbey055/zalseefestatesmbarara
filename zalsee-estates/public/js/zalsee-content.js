@@ -160,7 +160,10 @@
       var agent = card.querySelector('.list-team h3');
       var date = card.querySelector('.list-team .text-right');
       var specs = card.querySelector('.property_list');
-      if (image) image.style.backgroundImage = "url('images/assets/images/lands/" + listing.image + "')";
+      if (image) {
+        image.style.backgroundImage = "url('/images/assets/images/lands/" + listing.image + "')";
+        image.removeAttribute('data-lazy-background');
+      }
       if (title) title.textContent = listing.name;
       if (location) location.innerHTML = '<i class="ion-ios-pin"></i> ' + listing.location + ' <span class="sale">Available</span>';
       if (price) price.textContent = formatUGX(listing.price);
@@ -326,10 +329,26 @@
     document.querySelectorAll('a[href="https://youtube.com"]').forEach(function (link) { link.href = 'https://www.youtube.com/@ZalseefEstates'; });
   }
 
+  function bindContactForm() {
+    var form = document.getElementById('contactForm');
+    if (!form || form.getAttribute('data-bound') === 'true') return;
+    form.setAttribute('data-bound', 'true');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = (form.querySelector('[name="name"]') || {}).value || '';
+      var email = (form.querySelector('[name="email"]') || {}).value || '';
+      var subject = (form.querySelector('[name="subject"]') || {}).value || 'Website enquiry';
+      var message = (form.querySelector('[name="message"]') || {}).value || '';
+      var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+      window.location.href = 'mailto:zalseefmhd256@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+  }
+
   function init() {
     updateText();
     updateImages();
     updateLinks();
+    bindContactForm();
     updateCurrencyAndStats();
     if (document.querySelector('.hero-slider')) updateHome();
     else if (document.querySelector('.property-wrap') || document.querySelector('.blog-entry')) updateProperties();
