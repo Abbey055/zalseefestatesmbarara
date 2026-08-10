@@ -1,0 +1,9 @@
+{
+  "name": "muk-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix zalsee-estates run dev",
+    "build": "npm --prefix zalsee-estates run build",
+    "preview": "npm --prefix zalsee-estates run preview"
+  }
+}
